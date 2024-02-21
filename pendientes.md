@@ -7,6 +7,9 @@ p58,
   Extra UVa: 11805. 12478.
   Extra Kattis: faktor, planina, romans.
 
+
+1p 58 Ejercicios de arrays
+
 ---------
 te quedate en p 58, 2. UVa 01124 - Celebrity Jeopardy, terminado
 en la página 58, 4. UVa 11547 - Automatic Answer

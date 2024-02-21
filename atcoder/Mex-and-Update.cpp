@@ -11,7 +11,7 @@ class SegmentTree {
     int n;
     vector<Node> nodes;
     vector<int> A;
-    
+
     SegmentTree(int nuevo) {
       n = nuevo;
       nodes.assign(4 * n, Node{0, false});
@@ -19,7 +19,8 @@ class SegmentTree {
 
     void update(int idx, int left, int right, int pos, int val) {
       if (left == right) {
-        nodes[idx].frecuency += val;
+        if (nodes[idx].frecuency >= 0)
+          nodes[idx].frecuency += val;
         nodes[idx].exist = nodes[idx].frecuency > 0;
         return;
       }
@@ -40,7 +41,7 @@ class SegmentTree {
 
     int mex(int idx, int left, int right) {
       int mid = (left + right) / 2;
-      cout << "=>" << left << "-" << right << '\n';
+      //cout << "=>" << left << "-" << right << '\n';
       if (left == right ) {
         return left;
       }
@@ -48,9 +49,7 @@ class SegmentTree {
         int leftChild = 2 * idx + 1;
         int rightChild = 2 * idx + 2;
         if (nodes[leftChild].exist) 
-        {
           return mex(rightChild, mid + 1, right);
-        }
         else 
           return mex(leftChild, left, mid);
       }
@@ -58,18 +57,30 @@ class SegmentTree {
 };
 int main () {
   int n, q, a, i, x; scanf("%d %d", &n, &q);
-  vector <int> l;
-  char dummy;
-  SegmentTree s(n);
-  while (scanf("%d%c", &a, &dummy)) {
-    l.push_back(a);
-    cout << ": " << a << '\n';
-    if (dummy == '\n') break;
+  vector<int> A; //se crea la lista para acceder a los elementos 
+  SegmentTree solver(n);
+  int j = n;
+  while (j --) {
+    scanf("%d", &a);
+    //cout << a << " ";
+    solver.update(0, 0, n - 1, a, +1); //Se actualizan los elementos dentro del Seg. Tree
+    A.push_back(a); //se añaden los elementos a la lista
   }
-  while (q--) {
+  while (q--) { //Por todas las queries
     scanf("%d %d", &i, &x);
-    s.update(0, 0, n - 1, i, +1);
-    cout << s.mex() << '\n';
+    solver.update(0, 0, n - 1, A[i - 1], -1); //se resta la frecuencia de 
+    solver.update(0, 0, n - 1, x, +1);
+    A[i - 1] = x;
+    cout << solver.mex() << "\n";
   }
   return 0;
+
+  //SegmentTree solver(8);
+  //solver.update(0, 0, 8 - 1, 0, +1);
+  //solver.update(0, 0, 8 - 1, 1, +1);
+  //solver.update(0, 0, 8 - 1, 2, +1);
+  //solver.update(0, 0, 8 - 1, 2, -1);
+  //solver.update(0, 0, 8 - 1, 2, -1);
+  //solver.update(0, 0, 8 - 1, 2, +1);
+  //cout << solver.mex() << '\n';
 }
