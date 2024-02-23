@@ -1,17 +1,18 @@
 #include <bits/stdc++.h> 
 using namespace std;
-long trees(long d, long m) {
-  return d / m;
+long piso(long a, long b) {
+  long r = (a % b + b) % b;
+  return (a - r) / b;
 }
 int main () {
   long a, m, l, r;
   cin >> a >> m >> l >> r;
-  int bonus = (l <= a && a <= r ) ? 1 : 0; 
   l -= a;
   r -= a;
-  long t1, t2;
-  t1 = trees(l, m);
-  t2 = trees(r, m);
-  cout << t2 - t1  + bonus << '\n';
+  //long t1, t2;
+  //t1 = floor(l / m);
+  //t2 = floor(r / m);
+  //cout << t2 - t1  << '\n';
+  cout << piso (r, m) - piso(l - 1, m) << '\n';
   return 0;
 }
