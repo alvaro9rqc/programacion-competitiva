@@ -10,6 +10,13 @@ p58,
 
 1p 58 Ejercicios de arrays
 
+preguntas elvis
+-----------
+¿es necesario leer primero toda la data y después realizar operaciones?
+https://onlinejudge.org/external/121/12150.pdf
+
+
+
 ---------
 te quedate en p 58, 2. UVa 01124 - Celebrity Jeopardy, terminado
 en la página 58, 4. UVa 11547 - Automatic Answer
