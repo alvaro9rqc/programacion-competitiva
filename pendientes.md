@@ -13,3 +13,20 @@ p58,
 ---------
 te quedate en p 58, 2. UVa 01124 - Celebrity Jeopardy, terminado
 en la página 58, 4. UVa 11547 - Automatic Answer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RESUELTOS:
