@@ -7,5 +7,6 @@ int main () {
   else 
     cout << "Glove\n";
   return 0;
+  // cout << (b > c ? "bat":"glove")
 }
 
