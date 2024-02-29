@@ -14,6 +14,8 @@ preguntas elvis
 -----------
 ¿es necesario leer primero toda la data y después realizar operaciones?
 https://onlinejudge.org/external/121/12150.pdf
+aquí es conveniente analisar char por char o obtener toda la linea primero
+https://onlinejudge.org/external/131/13181.pdf
 
 
 
