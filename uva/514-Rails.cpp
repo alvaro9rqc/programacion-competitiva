@@ -1,38 +1,40 @@
 #include <bits/stdc++.h> 
 using namespace std;
 int main () {
-  int n, b;
+  int n, b = 1;
   while (scanf("%d", &n) != EOF && n != 0) {
+    if(!b) printf("\n");
+    //printf("salto de bloque: %d\n", n);
+    //esto representa cada linea del bloque
     while (scanf("%d", &b), b != 0) {
-      //cout << "b: " << b << '\n';
-      int pen = n, i = n - 1; 
+      //cout << "primer número: " << b << '\n';
       stack<int> s;
-      if (b == pen)
-        pen --;
-      else 
-        s.push(b);
-      while (i--) {
+      int turn = 1, sca = n - 1;
+      while (b != turn) {
+        s.push(turn);
+        turn++;
+      }
+      while (sca > 0 && turn <= n) {
         scanf("%d", &b);
-        if (b == pen) {
-          //cout << "igual: " << b << '\n';
-          pen--;
-          while (!s.empty() && s.top() == pen) {
-            //cout << "top: " << s.top() << '\n';
-            s.pop();
-            pen--;
-          }
-        } else {
-          //cout << "agragar: " << b << '\n';
-          s.push(b);
+        sca--;
+        //revisar stack
+        while (!s.empty() && b == s.top()) {
+          s.pop();
+          if (sca) scanf("%d", &b);
+          //cout << "segundo número: " << b << '\n';
+          sca--;
         }
-      } 
-      if (s.size() == 0 )
+        turn++;
+        while (b != turn && turn < n + 1) {
+          turn++;
+        }
+      }
+      scanf("%*[^\n]");
+      if (s.empty())
         printf("Yes\n");
       else 
         printf("No\n");
     }
-    if (b != 0)
-      printf("\n");
   }
   return 0;
 }
