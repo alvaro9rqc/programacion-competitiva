@@ -3,8 +3,8 @@ using namespace std;
 int main () {
   string line;
   stack<string> people;
-  int n; scanf("%d", &n);
-  for (int i = 0; i <= n; i++) {
+  int n; scanf("%d\n", &n);
+  for (int i = 0; i < n; i++) {
     getline(cin, line);
     switch (line[0]) {
       case 'S':
