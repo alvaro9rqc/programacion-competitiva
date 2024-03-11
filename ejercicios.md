@@ -1131,7 +1131,7 @@ UVa 01025 - A Spy in the Metro, 265
 UVa 01047 - Zones *, 145
 UVa 01056 - Degrees of ... *, 246, 248
 UVa 01061 - Consanguine Calc... *, 38
-UVa 01062 - Containers *, 77
+#AC     UVa 01062 - Containers *, 77
 UVa 01064 - Network *, 145
 UVa 01091 - Barcodes *, 38
 UVa 01103 - Ancient Messages *, 199, 212
@@ -1906,7 +1906,7 @@ UVa 13038 - Directed Forest, 214
 UVa 13047 - Arrows, 39
 UVa 13048 - Burger Stand *, 74
 UVa 13054 - Hippo Circus *, 162
-UVa 13055 - Inception *, 77
+#AC     UVa 13055 - Inception *, 77
 UVa 13059 - Tennis Championship, 146
 UVa 13082 - High School Assembly, 163
 UVa 13091 - No Ball, 40

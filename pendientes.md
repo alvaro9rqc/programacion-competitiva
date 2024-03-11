@@ -16,8 +16,12 @@ preguntas elvis
 https://onlinejudge.org/external/121/12150.pdf
 aquí es conveniente analisar char por char o obtener toda la linea primero
 https://onlinejudge.org/external/131/13181.pdf
+sílabo ICPC
 
 
+tips elvis
+---------
+Elvis solo es la guía, que te ayudará cuando te trabes en algún problema
 
 ---------
 te quedate en p 58, 2. UVa 01124 - Celebrity Jeopardy, terminado
