@@ -30,6 +30,7 @@ int main () {
     int count = 0;
     int pending = 0;
     int next = 0;
+    int ok = 1;
     for (int i = 0; i < line.size(); i++) {
       count++;
       if (isOpen(line[i])) {
@@ -41,9 +42,10 @@ int main () {
             pila.pop();
             continue;
         } else {
-          printf("NO %d\n", count);
+          //printf("NO %d\n", count);
           //cout << "<<" << pila.top() << '\n';
-          return 0;
+          ok = 0;
+          break;
         }
       }
       if (line[i] == '(') {
@@ -59,9 +61,19 @@ int main () {
             pila.pop();
             continue;
           } else {
-            printf("NO %d\n", count);
-            return 0;
+            //printf("NO %d\n", count);
+            ok = 0;
+            break;
           }
+        } else {
+          if (!pila.empty() && pila.top() == '(' ){
+            pila.pop();
+            continue;
+          } else {
+            //printf("NO %d\n", count);
+            ok = 0;
+            break;
+          }   
         }
       }
       if (line[i] == '*') {
@@ -75,11 +87,11 @@ int main () {
         next = 1;
       }
     }
-    if (pila.empty()) 
+    if (pila.empty() && ok) 
       printf("YES\n");
     else 
     {
-      printf("->NO %d\n", count);
+      printf("NO %d\n", count);
       //cout << pila.top() << '\n';
     }
   }
