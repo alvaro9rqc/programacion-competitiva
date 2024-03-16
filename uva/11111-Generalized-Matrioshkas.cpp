@@ -19,7 +19,10 @@ int main () {
     int flag = 1;
     //cout << line[12] << "-> "<< line.size() <<'\n';
     for (int i = 1; i < line.size(); i++) {
-      if (line[i] < 0 && !pila.empty() && line[i] > pila.top().first) {
+      if (line[i] < 0 /*&& !pila.empty() && line[i] > pila.top().first*/) {
+        if (!pila.empty() && line[i] <= pila.top().first) {
+          flag = 0; break;
+        }
         pila.push({line[i], 0});
         continue;
       }
