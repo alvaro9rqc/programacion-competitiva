@@ -14,9 +14,19 @@ preguntas elvis
 -----------
 ¿es necesario leer primero toda la data y después realizar operaciones?
 https://onlinejudge.org/external/121/12150.pdf
+
 aquí es conveniente analisar char por char o obtener toda la linea primero
 https://onlinejudge.org/external/131/13181.pdf
+
 sílabo ICPC
+
+cómo hago si cuando escribo mi programa, recibo wa y pruebo con algunos casos de prueba extras, e igual me da la respuesta que quiere el problema. 
+
+qué tipo de matemática se necesita para la programación competitiva: le das lo de PAZ: concrete maths.
+
+idea de compañero de estudio. fijan meta, se dan una retroalimentación, y de proponen un objetivo
+
+que hay de los ejercicios matemáticos que hay. También deberíamos resolverlos
 
 
 tips elvis
