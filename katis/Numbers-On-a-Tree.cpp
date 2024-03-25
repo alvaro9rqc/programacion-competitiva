@@ -18,18 +18,19 @@ int main () {
   scanf("%d ", &h);
   string s;
   cin >> s ;
-  priority_queue<int> pq;
-  for (int i = 0; i < (1 << (h + 1)) - 1; i++) {
-    pq.push(i + 1);
-  }
+  //priority_queue<int> pq;
+  //for (int i = 0; i < (1 << (h + 1)) - 1; i++) {
+  //  pq.push(i + 1);
+  //}
   int idx = 0;
   for (int i = 0; i < s.size(); i++) {
     calc(idx, s[i]);
   }
-  for (int i = 0; i < idx; i++) {
-    pq.pop(); 
-  }
-  cout << pq.top() << '\n';
+  //for (int i = 0; i < idx; i++) {
+  //  pq.pop(); 
+  //}
+  //cout << pq.top() << '\n';
+  cout << ((1 << (h + 1)) - 1) - idx << '\n';
   return 0;
 }
 
