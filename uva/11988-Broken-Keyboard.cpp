@@ -1,30 +1,39 @@
 #include <bits/stdc++.h> 
 using namespace std;
+void pri (int& a, const int& b, const string& s) {
+  for (a; a < b; a++) {
+    printf("%c", s[a]);
+  }
+}
+
 int main () {
   string s;
   while (getline(cin, s))  {
     //cout << s << '\n';
-    string f = "", t;
-    char m = 0; int j = 0;
+    deque<pair<int, int>> ref;
+    int j = 0; char m = 0;
     for (int i = 0; i < s.size(); i++) {
       if (s[i] == '[' || s[i] == ']') {
-        t = s.substr(j, i - j);
-        j = i + 1;
         if (m == '[') {
-          f = t + f;
-        } else if (m == ']') {
-          f += t;
-        } else 
-          f = s.substr(0, i);
+          ref.push_back({j, i});
+        } else {
+          ref.push_front({j, i});
+        } 
         m = s[i];
+        j = i + 1;
       }
     }
     if (m == '[') {
-      f = s.substr(j) + f;
+      ref.push_back({j, s.size()});
     } else if (m == ']') {
-      f += s.substr(j);
+      ref.push_front({j, s.size()});
     } 
-    cout << f << '\n';
+    while (!ref.empty()) 
+    {
+      pri(ref.back().first, ref.back().second, s);
+      ref.pop_back();
+    }
+    printf("\n");
   } 
   return 0;
 }
