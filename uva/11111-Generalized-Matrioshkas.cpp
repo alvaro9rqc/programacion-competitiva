@@ -6,12 +6,11 @@ int main () {
   while (true) {
     //scan the elements
     vector <int> line;
-    if (scanf("%d%c", &n, &dumy) == EOF ) break;
-    line.push_back(n);
-    while (scanf("%d%c", &n, &dumy)) {
-      line.push_back(n);
-      if (dumy == '\n') break;
-    }
+    string dummy; 
+    if (!getline(cin, dummy)) break;
+    istringstream ss(dummy); int help;
+    while (ss >> help) 
+      line.push_back(help);
     stack <pair<int, int>> st;
     bool f = true;
     //operations
@@ -33,9 +32,8 @@ int main () {
         break;
       }
     }
-    if (f) cout << ":-) Matrioshka!\n";
+    if (f && st.empty()) cout << ":-) Matrioshka!\n";
     else cout << ":-( Try again.\n"; 
   }
   return 0;
 }
-
