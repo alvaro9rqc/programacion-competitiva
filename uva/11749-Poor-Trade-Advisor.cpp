@@ -4,7 +4,7 @@ int main () {
   int n, m;
   while (1) {
     scanf("%d %d", &n, &m);
-    if (n == 0) break;
+    if (n == 0 && m == 0) break;
     long sumppa = 0;
     double avr = 0;
     vector<vector< pair<int, int>>> graph(n);
