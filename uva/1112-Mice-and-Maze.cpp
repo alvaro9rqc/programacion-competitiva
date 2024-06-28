@@ -22,7 +22,7 @@ void dijkstra(vector<vector<pair<int,int>>>& g, int& ex, int& t) {
       pq.emplace(dist[v], v);
     }
   }
-  cout << n << '\n';
+  cout << n << "\n";
 }
 int main () {
   ios_base::sync_with_stdio(false);
@@ -35,7 +35,8 @@ int main () {
       cin >> a >> b >> w;
       graph[--b].push_back({--a, w});
     }
-    dijkstra(graph, ex, t);
+    dijkstra(graph, --ex, t);
+    if (tests != 0) cout << '\n';
   }
   return 0;
 }
