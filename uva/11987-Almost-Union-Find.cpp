@@ -23,6 +23,7 @@ class UnionFind {
     int findSet(int i) {
       if (p[i] == i) return i;
       int root = findSet(p[i]);
+      p[i] = root;
       if (childs[root].find(i) == childs[root].end()) {
         childs[root].insert(i);
       }
