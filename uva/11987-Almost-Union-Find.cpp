@@ -21,7 +21,13 @@ class UnionFind {
     }
 
     int findSet(int i) {
-      return (p[i] == i) ? i: ( p[i] = findSet(p[i]) );
+      if (p[i] == i) return i;
+      int root = findSet(p[i]);
+      if (childs[root].find(i) == childs[root].end()) {
+        childs[root].insert(i);
+      }
+      return root;
+      //return (p[i] == i) ? i: ( p[i] = findSet(p[i]) );
     }
 
     bool isSameSet(int i, int j) {
@@ -50,8 +56,8 @@ class UnionFind {
 
     void moveToSet(int i, int j) {
       if ( isSameSet(i, j) ) return;
-      //setSize[ findSet(i) ]--;
-      //sum[findSet(i)] -= i;
+      setSize[ findSet(i) ]--;
+      sum[findSet(i)] -= i;
       int lastChild = -1;
       for ( auto it = childs[i].begin(); it != childs[i].end();) {
         if (isSameSet(i, *it)) {
@@ -63,9 +69,11 @@ class UnionFind {
       if (p[i] == i && lastChild != -1) {
         for ( auto it = childs[i].begin(); it != childs[i].end(); ++it ) {
           p[*it] = lastChild;
+          //childs[lastChild].insert(*it); <----
         }
-        setSize[ lastChild ] = --setSize[i];
-        sum[ lastChild ] = sum[i] - i;
+        //childs[lastChild].erase(lastChild); <----
+        setSize[ lastChild ] = setSize[i];
+        sum[ lastChild ] = sum[i];
       }
       childs[i].clear();
       p[i] = i;
