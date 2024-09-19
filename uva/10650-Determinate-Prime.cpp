@@ -9,7 +9,7 @@ int main () {
   bitset<32001> bs;
   bs.set();
   vi p;
-  map<int, int> m;
+  vi m(32002);
   bs[0] = bs[1] = 0;
   for (long i = 2; i < 32001; ++i)
     if ( bs[i] ) {
@@ -40,7 +40,9 @@ int main () {
     if (it  == p.end()) continue;
     for (it; *it < y; it++) {
       //cout << "-- " << x << y << '\n';
-      if ( m[ *it ] > 0 && m[*it] + *it < y ) {
+      if ( m[ *it ] > 0  ) {
+        int alc = m[ *it ] * ( *(it+1) - *it );
+        if (( *it + alc ) > y) continue;
         int rep = m [ *it ];
         for (int i = 0; i < rep; ++i)
         {
@@ -48,6 +50,7 @@ int main () {
           it++;
         }
         cout << *it << '\n';
+        --it;
       }
     }
   }
