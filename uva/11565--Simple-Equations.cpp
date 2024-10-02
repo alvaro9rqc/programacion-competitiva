@@ -1,31 +1,27 @@
 #include <bits/stdc++.h> 
 using namespace std;
 int main () {
-  //Really, I didn't try it, but I read the solution in Halims' book
-  //TIP: Complete Search
-  //I couldn't do it, but now I know how to solve it, so i need to try again after a while.
-  //Now it's been a long time, I can do it
-  int a, b, c, N;
-  cin >> N; 
-  while (N--) {
-    cin >> a >> b >> c;
-    bool nof = true;
-    for (int x = 1; x*x <= c && nof; ++x ) 
-      for (int y = 1; y*y <= c - x*x && nof; ++y)
-        for (int z = 1; z <= c - x*x - y*y && nof; ++z) {
-          if ( 
-              (x*x + y*y + z*z == c) &&
+  int a, b, c,n;
+  scanf("%d", &n);
+  while (n--) {
+    scanf("%d %d %d", &a, &b, &c);
+    bool f = false;
+    int x, y, z;
+    for (x = -100; x <= 100; ++x )
+      for (y = -100; y <= 100; ++y )
+        for (z = -100; z <= 100; ++z )
+          if (
+              (x != y && x != z && y !=z) &&
+              (x + y + z == a) &&
               (x*y*z == b) &&
-              (x+y+z == a)
-             )
-          {
-            cout << x << ' ' << y << ' ' << z << '\n';
-            nof = false;
+              (x*x + y*y + z*z == c)
+             ) {
+            f = true;
+            goto salir;
           }
-        }
-    if (nof) cout << "No solution.\n";
-    //cout << N << '\n';
+salir:
+    if (f) printf("%d %d %d\n", x, y,z);
+    else printf("No solution.\n");
   }
-  return 0;
 }
 
