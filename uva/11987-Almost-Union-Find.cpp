@@ -6,6 +6,13 @@ class UnionFind {
   private:
     vi p, rank, setSize, sum;
     vector< unordered_set<int> > childs;
+
+    void cleanVertex(int i) {
+      p[i] = i;
+      rank[i] = 0;
+      sum[i]=i;
+      setSize[i] = 1;
+    }
   public:
     UnionFind(int n) {
       p.assign(n, 0);
@@ -23,10 +30,11 @@ class UnionFind {
     int findSet(int i) {
       if (p[i] == i) return i;
       int root = findSet(p[i]);
-      p[i] = root;
       if (childs[root].find(i) == childs[root].end()) {
         childs[root].insert(i);
+        if (p[i] != root) childs[p[i]].erase(i);
       }
+      p[i] = root;
       return root;
       //return (p[i] == i) ? i: ( p[i] = findSet(p[i]) );
     }
@@ -57,8 +65,30 @@ class UnionFind {
 
     void moveToSet(int i, int j) {
       if ( isSameSet(i, j) ) return;
-      setSize[ findSet(i) ]--;
+      //if (p[i] == i && sizeOfSet(i) == 1) {
+      //  unionSet(i, j);
+      //  return;
+      //} 
+      setSize[findSet(i)]--;
       sum[findSet(i)] -= i;
+      if (p[i] == i && sizeOfSet(i) > 1) {
+        int c0 = *childs[i].begin();
+        p[c0] = c0;
+        childs[i].erase(c0);
+        childs[c0].insert(i);
+        p[i] = c0;
+        setSize[c0] = setSize[i];
+        sum[c0] = setSize[i];
+      }
+      if (childs[i].size() > 0) {
+        vi c (childs[i].begin(), childs[i].end());
+        for (int ci : c) findSet(ci);
+      }
+      childs[p[i]].erase(i);
+      cleanVertex(i);
+      unionSet(i, j);
+
+      /*
       int lastChild = -1;
       for ( auto it = childs[i].begin(); it != childs[i].end();) {
         if (isSameSet(i, *it)) {
@@ -76,13 +106,10 @@ class UnionFind {
         setSize[ lastChild ] = setSize[i];
         sum[ lastChild ] = sum[i];
       }
-      childs[i].clear();
-      p[i] = i;
-      rank[i] = 0;
-      sum[i]=i;
-      setSize[i] = 1;
-      unionSet(i, j);
+      */
+      //clean vertex
     }
+
 };
 
 int main () {

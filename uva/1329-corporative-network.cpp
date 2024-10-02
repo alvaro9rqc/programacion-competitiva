@@ -1,39 +1,21 @@
 #include <bits/stdc++.h> 
 using namespace std;
-class UnionFind {
-  private:
-    vector<int> p, rank, len;
-  public:
-    UnionFind(int n) {
-      p.assign(n, 0);
-      for (int i = 0; i < p.size(); i++)
-        p[i] = i;
-      rank.assign(n, 0);
-      len.assign(n, 0);
-    }
+typedef vector<int> vi;
 
-    int findSet(int n) {
-      return (p[n] == n) ? n : ( p[n] = findSet(p[n]) );
-    }
-
-    bool isSameSet(int i, int j) {
-      return findSet(i) == findSet(j);
-    }
-
-    int getLen(int i ) {
-      return len[ findSet(i) ];
-    }
-
-    void unionSet(int i, int j) {
-      if ( isSameSet(i,j) ) return;
-      int x = findSet(i), y = findSet(j); //I could cause sombre problems
-      if (rank[x] > rank[y]) swap(x, y);
-      p[x] = y;
-      if (rank[x] == rank[y]) ++rank[y];
-      len[y] += len[x] + ( abs(i - j) % 1000 );
-    }
-
+enum {
+  UNVISITED = -1,
+  VISITED = -2
 };
+
+void dfs (vector<vi>& g, vi& w, vi& vs, int o, int p) {
+  vs[o] = VISITED;
+  w[o] += p;
+  for (int v : g[o]) {
+    if (vs[v] == UNVISITED) {
+      dfs(g, w, vs, v, p);
+    }
+  }
+}
 
 int main () {
   ios_base::sync_with_stdio(false);
@@ -43,17 +25,27 @@ int main () {
   cin >> T;
   while (T--) {
     cin >> N;
-    UnionFind uf(N);
-    while (getline(cin, line)){
-      if (line[0] == '0') break;
-      istringstream buff(line);
+    vector<vi> g(N+1, vi());
+    vi ws(N+1, 0);
+    while (true){
+    //while (getline(cin, line)){
+      //cout << line << "-\n"; 
+      //if (line[0] == 'O') break;
+      //istringstream buff(line);
       cin >> A; 
+      //cout << "->" << A << "<-\n";
+      if (A == 'O') break;
       if (A == 'E') {
         cin >> I;
-        cout << uf.getLen(--I) << '\n';
+        //cout << uf.getLen(--I) << '\n';
+        cout << ws[I] << '\n';
       } else {
         cin >> I >> J;
-        uf.unionSet(--I, --J);
+        g[J].push_back(I); //I could cause problems, for repeated data
+        int plus = abs(I - J) % 1000 + ws[J];
+        vi arr(g.size(), UNVISITED);
+        dfs(g, ws, arr, I, plus);
+        //uf.unionSet(--I, --J);
       }
     }
   }
