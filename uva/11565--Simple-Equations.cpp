@@ -7,19 +7,23 @@ int main () {
     scanf("%d %d %d", &a, &b, &c);
     bool f = false;
     int x, y, z;
-    for (x = -100; x <= 100; ++x )
-      for (y = -100; y <= 100; ++y )
-        for (z = -100; z <= 100; ++z )
-          if (
-              (x != y && x != z && y !=z) &&
-              (x + y + z == a) &&
-              (x*y*z == b) &&
-              (x*x + y*y + z*z == c)
-             ) {
-            f = true;
-            goto salir;
-          }
-salir:
+    int r = (int)( ceil(sqrt(c)) );
+    for (x=-r; x<r; ++x) 
+    {
+      int l = c - x*x;
+      for(y = -l; y < l; ++y) {
+        z = a - x - y;
+        if (
+            (x != y && z != y && x !=z) &&
+            (x*z*y == b) &&
+            (x*x + y*y + z*z == c)
+           ) {
+          f = true;
+          goto label;
+        }
+      }
+    }
+label:
     if (f) printf("%d %d %d\n", x, y,z);
     else printf("No solution.\n");
   }
