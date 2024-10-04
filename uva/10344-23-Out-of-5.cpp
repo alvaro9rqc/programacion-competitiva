@@ -9,7 +9,10 @@ vi v(5);
 bool bactraking(int n, int i) {
   if (i == 0) return (n == v[i]);
   bool f = false;
-  if (!f && v[i] != 0 && (n % v[i] == 0)) f = bactraking(n/v[i], i-1);
+  if (!f  && ((n % v[i]) == 0)) 
+  {
+    f = bactraking(n/v[i], i-1);
+  }
   if (!f) f = bactraking(n -v[i], i-1);
   if (!f) f = bactraking(n + v[i], i-1);
   return f;
@@ -28,8 +31,11 @@ int main () {
         v[4] == 0
        ) break;
     bool f = false;
+    sort(v.begin(), v.end());
+    int x = 1;
     do {
       f = bactraking(23, 4);
+      //cout << x++ << '\n';
     } while (next_permutation(v.begin(), v.end()) && !f);
     if (f) cout << "Possible\n";
     else cout << "Impossible\n";
