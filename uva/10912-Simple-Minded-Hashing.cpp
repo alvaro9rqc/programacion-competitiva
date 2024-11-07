@@ -11,7 +11,8 @@ vector<map<tuple<int,int>,long> >memo(27);
 // 3 10
 long x (int c,int l, int s) {
   if (l == 1 ) return (c <= s && s <= 26)? 1:0;
-  if (( s < c + l -1 )  || s - c > (l-1)*26) return 0; 
+  if (c == 27) return 0;
+  //if (( s < c*l + (l*(l-1))/2 )  || s > c + (l-1)*26) return 0; 
   if (memo[c].find({l,s}) != memo[c].end()) return memo[c][{l,s}];
   long sum = x(c+1, l, s) + x (c+1, l-1, s-c);
   return memo[c][{l,s}] = sum;
