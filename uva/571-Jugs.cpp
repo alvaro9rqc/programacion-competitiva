@@ -75,6 +75,7 @@ int main () {
   ios_base::sync_with_stdio(false);
   while(cin >> a >> b >> n) {
     f = false;
+    s.clear();
     memo.assign(a+1, vector<bool>(b+1, false));
     x(0,0);
     for(auto& str: s) {
