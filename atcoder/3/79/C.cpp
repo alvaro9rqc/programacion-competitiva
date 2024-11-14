@@ -6,30 +6,29 @@ typedef vector<ii> vii;
 
 int main () {
   ios_base::sync_with_stdio(false);
-  unordered_map <long, long> map;
-  long n, m;
+  long n; long m;
   cin >> n >> m;
-  vector<long > v(m,0);
+  vector<pair<long, long>> v(m);
   for (long i = 0; i < m; ++i) {
-    cin >> v[i]; v[i]--;
-    map[v[i]];
+    cin >> v[i].first;
   }
   for (long i = 0; i < m; ++i) {
-    cin >> map[v[i]];
+    cin >> v[i].second;
   }
-  long act = 0;
-  long movs = 0;
-  for (long i = 0; i < n-1; ++i) {
-    if (map.find(i) != map.end()) 
-      act += map[i];
-    if (act > 1) {
-      movs += act-1;
-      act--;
+  sort(v.begin(), v.end());
+  long sum = 0;
+  long acsum = 0;
+  for (long i = 0; i < m; ++i) {
+    if (sum < v[i].first -1) {
+      cout << -1 << '\n';
+      return 0;
     }
+    sum += v[i].second;
+    acsum += v[i].first * v[i].second;
   }
-  if (act != 1) cout << -1 << '\n';
-  else cout << movs << '\n';
-  return 0;
+  long t = ( n*(n+1) ) / 2;
+  if (sum != n) cout << -1 << '\n';
+  else cout <<  t- acsum << '\n';
 }
 
 
