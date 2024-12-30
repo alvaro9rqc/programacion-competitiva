@@ -49,6 +49,44 @@ a. sweep line in geometry
 ## Tópicos avanzados
 a. Problemas compuestos (2 o 3 tópicos avanzados)
 
+# 10-11-2024 
+
+Tips para llevar la competitiva:
+
+**ES UN CURSO MÁS**
+Llevar todos los semestres unas horas como si fuera un curso. Es un curso más.
+
+De hecho, según Elvis, sería dos cursos si realmente quieres llegar a la mundial. 
+
+**VENTAJA LABORAL ahora**
+
+Las entrevistas, ahí no tendrán ningún problema
+
+Además, saber estructuras de datos es algo fundamental.
+
+También, la metodología de aprendizaje del pensamiento computacional.
+
+El hecho de descomponer un problema en varios.
+
+**Matemática pura**
+
+- "Podrías, pero realmente, no sé qué tan necesario"
+
+En sí, es importante resolver problemas, y leer los libros. 
+
+La carrera es muy completa, pero realmente, no es fundamental todo lo que enseñan para poder clasificar. 
+
+**Como mejorar en implementación**
+
+- Mejorar habilidad de tipeo, sí es importante
+
+- Practicar :v
+
+**Cómo mejorar como equipo?**
+
+- Practicar :v
+- Vas al codeforces, y practicas como equipo, hay competencias específicas
+
 ---
 Preguntas:
 - Tipos de problemas de LCA 

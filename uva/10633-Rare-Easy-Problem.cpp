@@ -17,12 +17,13 @@ int main () {
   while (cin >> c) {
     if (c == 0 ) break;
     set<ll> s;
-    for (auto i = 1; i < 10; ++i) {
-      if (last(c + i) == i) s.insert(c+i);
+    for (auto i = 0; i < 10; ++i) {
+      if (( c - i )%9 == 0) s.insert((c-i) / 9 * 10 + i);
     }
-    for(auto& x: s) {
-      cout << x << ' ';
-    }
+    auto it = s.begin();
+    cout << *it;
+    it++;
+    while(it != s.end()) cout << ' ' << *it++;
     cout << '\n';
   }
   return 0;
