@@ -10,38 +10,27 @@ int main () {
   cin.tie(NULL);
   ll n, S; cin >> n >> S;
   vector<ll> a(n);
+  ll sum = 0;
   for(auto& i: a) {
     cin >> i;
+    sum += i;
   }
+  S %= sum;
+  a.insert(a.end(), a.begin(), a.end());
+  set<ll> set;
+  set.insert(0);
   ll acs = 0;
-  ll sum = 0;
-  unordered_set<ll> s;
-  bool f = false;
   for(auto& i: a) {
     acs += i;
-    s.insert(acs);
+    set.insert(acs);
   }
-  s.insert(0);
-  sum = acs;
-  S %= sum;
-  if (s.find(S) != s.end()) {
-    f = true;
-    goto label;
-  }
-  cout << "-> " << S << '\n';
-  for(auto& i: a) {
-    acs -= i;
-    cout << S << ": " << S - acs << '\n';
-    if (S == acs or ( s.find(S-acs) != s.end() )) {
-      f=true;
-      goto label;
+  for(auto& i: set) {
+    if (set.find(S + i) != set.end()) {
+      cout << "Yes\n";
+      return 0;
     }
   }
-label: 
-  if (f)
-    cout << "YES\n";
-  else 
-    cout << "NO\n";
+  cout << "No\n";
   return 0;
 }
 

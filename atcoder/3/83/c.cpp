@@ -5,54 +5,44 @@ typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<ii> vii;
 
-vector<string> grid;
-int h,w,d;
+int H,W,D;
 
-int dr[] = {-1,0,0,1};
-int dc[] = {0,1,-1,0};
-
-bool reach(int r,int c, int e) {
-  if (e > d) return false;
-  return 0 <= r and r < h and 
-    0 <= c and c < w and 
-    ( grid[r][c] == '.' or grid[r][c]=='x' );
-}
-
-int v(int i, int j) {
-  int ans = 1;
-  queue<tuple<int,int,int>> q;
-  q.emplace(i,j,0);
-  while (!q.empty()) {
-    auto[r,c,e] = q.front(); q.pop();
-    for (auto i = 0; i < 4; ++i) {
-      int nr = r + dr[i];
-      int nc = c + dc[i];
-      if (reach(nr,nc,e+1)) {
-        q.emplace(nr,nc,e+1);
-        if (grid[nr][nc] == '.')
-        {
-          ans++;
-          grid[nr][nc] = 'x';
-        }
-      }
-    }
-  }
-  return ans;
-}
+int dr[] = {1,-1,0,0};
+int dc[] = {0,0,-1,1};
 
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  cin >> h >> w >> d;
-  grid.resize(h);
-  for (auto i = 0; i < h; ++i) {
-    cin >> grid[i];
+  cin >> H>>W>>D;
+  vector<string> g(H);
+  for(auto& i: g) {
+    cin >> i;
   }
-  int ans = 0;
-  for (auto i = 0; i < h; ++i) {
-    for (auto j = 0; j < w; ++j) {
-      if (grid[i][j] == 'H') 
-        ans += v(i,j);
+  queue<tuple<int,int,int>> qu;
+  ll ans = 0;
+  for (auto i = 0; i < H; ++i) {
+    for (auto j = 0; j < W; ++j) {
+      if (g[i][j] == 'H'){
+        ++ans;
+        qu.emplace(i,j,D-1);
+        g[i][j] = 'x';
+      }
+    }
+  }
+  if (D == 0) {
+    cout << ans << '\n';
+    return 0;
+  }
+  while(!qu.empty()) {
+    auto [r, c, d] = qu.front(); qu.pop();
+    for (auto i = 0; i < 4; ++i) {
+      int nr=r+dr[i], nc=c+dc[i];
+      if (0 <= nr and nr < H and 0<=nc and nc < W and g[nr][nc]=='.') {
+        g[nr][nc] = 'x';
+        if (d>0)
+          qu.emplace(nr,nc,d-1);
+        ++ans;
+      }
     }
   }
   cout << ans << '\n';
