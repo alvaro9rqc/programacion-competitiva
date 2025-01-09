@@ -9,12 +9,27 @@ int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
   int n; cin >> n;
-  vector<string> m1(n);
-  int m;
-  for (auto i = 0; i < n; ++i) {
-    cin >> m1[n];
+  vector<string> S(n);
+  int m = 0;
+  for(auto& i: S) {
+    cin >> i;
+    if (i.size() > m) m = i.size();
   }
-
+  vector<string>cop(m, string(n, '*'));
+  for (auto i = 0; i < n; ++i) {
+    for (auto j = 0; j < S[i].size(); ++j) {
+      cop[j][n-i-1] = S[i][j];
+    }
+  }
+  for(auto& s: cop) {
+    for (auto i = s.size()-1; i >= 0; --i) {
+      if (s[i] != '*') break;
+      s[i] = ' ';
+    }
+  }
+  for(auto& s: cop) {
+    cout << s << '\n';
+  }
   return 0;
 }
 
