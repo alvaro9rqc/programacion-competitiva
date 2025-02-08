@@ -16,50 +16,41 @@ typedef vector<ll_t> vll_t;
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  int N, Tl, Ts; cin >> N >> Ts >> Tl;
-  deque<vll> dq(N, vll(4));
-  for(auto& ps: dq) {
-    cin
-      >> ps[0]
-      >> ps[1]
-      >> ps[2]
-      >> ps[3];
+  int N, S, T; cin >> N >> S >> T;
+  vector<tuple<int,int,int,int>> pts(N);
+  for(auto& [a,b,c,d]: pts) {
+    cin >> a>>b>>c>>d;
   }
-  //cout << "l: " << dq.size()<<'\n';
-  int x=0,y=0;
-  double T = 0;
-  auto fd2=[](ll x, ll y, ll a, ll b) {
-    return (x-a)*(x-a) + (y-b)*(y-b);
+  vi v(N);
+  iota(v.begin(),v.end(),0);
+  double ans = DBL_MAX;
+  auto mov= [&](int& x, int&y, int a, int b, int c, int d) {
+    double time =0;
+    time += sqrt( (a-x)*(a-x) + (b-y)*(b-y) ) / S;
+    time += sqrt( (c-a)*(c-a) + (d-b)*(d-b) ) / T;
+    x = c;
+    y = d;
+    return time;
   };
-  while (! dq.empty()) {
-    auto p = dq.begin();
-    ll d2 = fd2(x,y,( *p )[0],(*p)[1]);
-    ll nx=(*p)[2], ny=(*p)[3];
-    for(auto it = dq.begin(); it != dq.end(); ++it) {
-      auto& pp = *it;
-      ll t = fd2(x,y,pp[0],pp[1]);
-      if (t < d2) {
-        d2 = t;
-        p = it;
-        nx = pp[2];
-        ny = pp[3];
+  do{
+    for (auto i = 0; i < (1<<N); ++i) {
+      int x=0,y=0;
+      double lan = 0;
+      for (auto j = 0; j < N; ++j) {
+        auto [a,b,c,d] = pts[ v[j] ];
+        if (i & (1<<j)) {
+          swap(a,c);
+          swap(b,d);
+        }
+        lan+= mov(x,y,a,b,c,d);
+        //cout << mov(x,y,a,b,c,d)<<'\n';
       }
-      t = fd2(x,y,pp[2],pp[3]);
-      if (t < d2) {
-        d2 = t;
-        p = it;
-        nx = pp[0];
-        ny = pp[1];
-      }
+      //cout << "-> " << lan <<'\n';
+      ans = min(ans, lan);
     }
-    x = nx; y=ny;
-    //cout << x <<' '<<y<<'\n';
-    T += sqrt(d2)/ Ts + sqrt(fd2((*p)[0],(*p)[1],(*p)[2],(*p)[3])) / Tl;
-    dq.erase(p);
-    //cout <<"-> "<< d2 << '\n';
-    //cout << T <<'\n';
-  }
-  cout << T << '\n';
+  } while(next_permutation(v.begin(), v.end()));
+  //cout << ans <<'\n';
+  printf("%0.6lf\n", ans);
   return 0;
 }
 
