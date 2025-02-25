@@ -1,0 +1,44 @@
+#!/usr/bin/bash
+# Para mapeo en nvim:
+# nnoremap <F8> :!./z % c<CR>
+# nnoremap <F9> :!./z %<CR>
+pric() {
+  color=$1
+  msj=$2
+
+  case $color in
+    r)
+      echo -e "\e[31m$msj\e[0m"
+      ;;
+    g)
+      echo -e "\e[32m$msj\e[0m"
+      ;;
+  esac
+}
+
+
+filename=$1
+file="${filename%.*}"
+extension="${filename##*.}"
+directory="./${filename%/*}"
+#echo $directory
+cpp="c++23"
+
+options=$2
+
+if [[ "$extension" == "cpp" ]]; then
+  if [[ "$options" == "c" ]]; then
+    #pric r "Compilar"
+    echo "######################"
+    echo "###### COMPILAR ######"
+    echo "######################"
+    g++ -std="$cpp" -Wall -Wextra -Wshadow \
+      -Wconversion -Wfatal-errors \
+      -o "$file" "$filename" \
+      && cat "$directory/i" | ./"$file"
+  else 
+    cat "$directory/i" | ./$file
+  fi
+elif [[ "$extension" == "py" ]]; then
+  cat "$directory/i" | python3 "$filename"
+fi
