@@ -16,30 +16,59 @@ typedef vector<ll_t> vll_t;
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  ll N, Q; cin >> N >> Q;
-  vll a(N+2);
-  a[0]= LLONG_MIN;
-  a[N+1] = LLONG_MAX;
-  for (ll i = 1; i < N+1; ++i) {
-    cin >> a[i];
-  }
-  sort(a.begin(), a.end());
-  for (ll q = 0; q < Q; ++q) {
+  ll N, Q; cin >> N>>Q;
+  vll A(N); 
+  for(auto& e: A) cin >> e;
+  sort(A.begin(), A.end());
+  auto d = [&A] (ll i, ll x) {
+    return abs(A[i] - x);
+  };
+  for (auto i = 0; i < Q; ++i) {
     ll b, k; cin >> b >> k;
-    auto r = upper_bound(a.begin(), a.end(), b);
-    auto l = r-1;
-    ll ans;
-    for (auto i = 0; i < k; ++i) {
-      if( abs(b - *l) > abs(*r - b) ) {
-        ans = abs(*r -b);
-        ++r;
+    ll l=0, r= k-1;
+    ll p = lower_bound(A.begin(), A.end(), b) - A.begin();
+    if(p == N) --p;
+    if (p != 0) {
+      if ( abs(b - A[p]) > abs(b - A[p-1]) )
+        --p;
+    }
+    if (k == 1) {
+      cout << d(p,b)<<'\n';
+      continue;
+    }
+    while(true) {
+      //cout << l <<' ' << r <<"\n";
+      if (l < 0 or r >= N) {
+        break;
+      }
+      if(d(l,b) > d(r,b)) {
+        if ( r == N-1 or  d(r+1,b) >= d(l,b)) {
+          cout << d(l,b) <<'\n';
+          break;
+        } else {
+          ll dt = ( p - l )/2;
+          if (dt == 0) dt= 1;
+          l += dt;
+          r+=dt;
+          if (r >= N) {
+            l -= r -N+1;
+            r = N-1;
+          }
+        }
       } else {
-        ans = abs(*l -b);
-        --l;
+        if( l == 0 or d(l-1, b) >= d(r,b) ) {
+          cout << d(r,b) <<'\n';
+          break;
+        } else {
+          ll dt = (r - p) / 2;
+          if (dt == 0) dt++;
+          l -= dt;
+          r -= dt;
+        }
       }
     }
-    cout << ans <<'\n';
   }
+
 }
 
 
