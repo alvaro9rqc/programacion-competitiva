@@ -1,17 +1,17 @@
 N = int(input())
-A = list(map(int, input().split()))
-used = [False]*N
-i = N-2
-j = N-1
+A = list(map(int,input().split()))
+#print(*A)
+mid = N//2 + ( N&1 )
+#print("m", mid)
+low = 0
+up = mid
 ans = 0
-while i >= 0:
-    if used[j]: j-=1
-    elif used[i] or not(i < j): i-=1
-    elif A[i] <= A[j]//2:
-        used[i]=True
-        used[j]=True
-        i-=1
-        j-=1
+while(low < mid and up < N):
+    #print(A[low], A[up])
+    if A[low] <= A[up]//2: 
+        up+=1
+        low+=1
         ans +=1
-    else: i-=1
-print (ans)
+    else: 
+        up+=1
+print(ans)
