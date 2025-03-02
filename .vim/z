@@ -39,10 +39,10 @@ if [[ "$file_type" == "cpp" ]]; then
     echo "######################"
     g++ "$file" -std="$cpp_version" -Wall -Wextra -Wshadow \
       -Wconversion -Wfatal-errors \
-      -o "$file_directory/$file_not_ext" \
-      && cat "$file_directory/$input_file" | ./"$file_not_ext"
+      -o "$file_directory/$file_not_ext.out" \
+      && cat "$file_directory/$input_file" | "$file_directory/$file_not_ext.out"
   else 
-    cat "$file_directory/$input_file" | ./$file_not_ext
+    cat "$file_directory/$input_file" | "$file_directory/$file_not_ext.out"
   fi
 elif [[ "$file_type" == "py" ]]; then
   cat "$file_directory/$input_file" | python3 "$file"
