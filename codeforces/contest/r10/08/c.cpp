@@ -19,39 +19,21 @@ int main () {
   ll T; cin >> T;
   while(T--) {
     ll n; cin >> n;
-    ll N = 2*n;
-    vll A(N);
-    unordered_set<ll> s;
-    for(auto& e: A) 
-    {
-      cin >> e;
-      s.insert(e);
-    }
+    vll A(2*n);
+    for(auto& e: A) cin >> e;
     sort(A.rbegin(), A.rend());
-    ll acs = 0;
-    for (ll i = 1; i < N; i+=2) {
-      acs+= A[i-1]-A[i];
-    }
-    ll x = acs;
-    ll idx = 1;
-    while( s.find(x) != s.end() and x > 0 ) {
-      if (idx >= N) break;
-      x += A[idx] - A[idx-1];
-      idx += 2;
-    }
-    if (s.find(x) != s.end()) {
-      x = acs;
-      idx = 1;
-      while(s.find(x) != s.end() and x > 0) {
-        if (idx >= N) break;
-        x += A[idx-1]-A[idx];
-        idx +=2;
-      }
-    }
-    cout << x <<' ';
-    for(auto& e: A) cout << e <<' ';
-    cout <<'\n';
+    //for(auto& e: A) cout << e <<' ';
+    //cout << '\n';
 
+    ll suml = accumulate(A.begin(), A.begin()+n+1,0);
+    ll sumr = accumulate(A.begin()+n+1, A.end(),0);
+    //cout << "::" <<suml <<' '<< sumr <<'\n';
+    A.push_back(suml - sumr);
+    cout << A[n] << ' ';
+    for (ll i = 0; i < n; ++i) {
+      cout << A[n+1+i] <<' ' << A[i]<<' ';
+    }
+    cout <<'\n';
   }
 }
 
