@@ -20,6 +20,7 @@ const ll INF = LLONG_MAX/4;
 ll dp(int k, ll x , ll y) {
   if (k == 19) return INF;
   if (x == y) return 0;
+
   if(memo.find({k,x,y}) != memo.end()) return memo[{k,x,y}];
   ll inc = 1ull << k;
   ll ans = inc + min(
