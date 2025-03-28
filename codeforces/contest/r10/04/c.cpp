@@ -13,23 +13,47 @@ typedef vector<ll> vll;
 typedef vector<ll_p> vll_p;   
 typedef vector<ll_t> vll_t;
 
+ll delta(ll n) {
+  ll r = n % 10;
+  if (r == 7) return 0;
+  ll e = (r > 7)? r-7:10+r-3;
+  n/=10;
+  ll de = 10;
+  ll idx = 1;
+  while(n){
+    r = n % 10;
+    if (r==7) return 0; 
+    if (r < 7) {
+      if ( e >= 7 - r ) {
+        de = ll(pow(10ll, idx));
+        e = 7 - r;
+      }
+    } else {
+      if (e > r - 7) {
+        de = ll(pow(10ll, idx+1));
+        e = r - 7;
+      }
+    }
+    idx++;
+    n /= 10;
+  }
+  return de;
+}
+
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  int t; cin >> t;
-  while(t--) {
-    string n;
-    cin >> n;
-    ll nl = stroll(n);
-    int ans;
-    {
-      int d = (int)( n.back() - '0' );
-      if (d < 7) d+= 10;
-      ans = d-7;
-    }
-    for (auto i = n.end()-2; i >= n.begin(); --i) {
-      int d =(int)(*i-'0');
-      ans = min
+  ll t; cin >> t;
+  while(t--){
+    ll n; cin >> n;
+    ll d = delta(n);
+    for (auto i = 0; i < 10; ++i) {
+      ll r = delta(n + d*i - i);
+      cerr << n + d*i - i<<'\n';
+      if (r == 0) {
+        cout << i << '\n';
+        break;
+      }
     }
   }
 }
