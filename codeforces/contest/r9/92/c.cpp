@@ -2,44 +2,44 @@
 using namespace std;
 using ll = long long;
 typedef pair<int, int> ii;
+typedef tuple<int, int, int> iii;
 typedef vector<int> vi;
 typedef vector<ii> vii;
+typedef vector<iii> viii;
+
+typedef pair<ll, ll> ll_p; 
+typedef tuple<ll, ll, ll> ll_t; 
+typedef vector<ll> vll;
+typedef vector<ll_p> vll_p;   
+typedef vector<ll_t> vll_t;
 
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  int tt;
-  cin >> tt;
-  while (tt--) {
-    int n;
-    long long k;
-    cin >> n >> k;
-    vector <int> a, b;
-
-    if (n <= 60 && (1ll << (n - 1)) < k) {
-      cout << -1 << endl;
+  ll t; cin >> t;
+  const ll lim = 40;
+  while(t--){
+    ll n, k; cin >> n>>k;
+    list<ll> left,right;
+    ll exp = min(n-1,lim);
+    if (k > (1ll<<exp)) {
+      cout << -1 << '\n';
       continue;
     }
-    k--;
-    vector <int> d;
-    while (k) {
-      d.push_back(k % 2);
-      k /= 2;
+    for (ll i = 1; i <n ; ++i) {
+      exp = min(n-i-1, lim);
+      if (k > (1ll<<exp)) {
+        right.push_front(i);
+        k -= 1ll << exp;
+      } else {
+        left.push_back(i);
+      }
     }
-    while (d.size() < n - 1) d.push_back(0);
-
-    for (int i = n - 2, j = 1; i >= 0; i--, j++) {
-      if (d[i] == 0) a.push_back(j);
-      else b.push_back(j);
-    }
-
-    reverse(b.begin(), b.end());
-    for (int i : a) cout << i << ' ';
-    cout << n << ' ';
-    for (int i : b) cout << i << ' ';
-    cout << endl;
+    left.push_back(n);
+    for(auto& e: left) cout << e << ' ';
+    for(auto& e: right) cout << e << ' ';
+    cout << '\n';
   }
-  return 0;
 }
 
 
