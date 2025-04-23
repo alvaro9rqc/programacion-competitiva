@@ -9,56 +9,73 @@ typedef vector<iii> viii;
 
 typedef pair<ll, ll> ll_p; 
 typedef tuple<ll, ll, ll> ll_t; 
-typedef vector<ll> vll;
-typedef vector<ll_p> vll_p;   
-typedef vector<ll_t> vll_t;
+typedef vector<ll> vl;
+typedef vector<ll_p> vll;   
+typedef vector<ll_t> vlll;
 
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  int T; cin >> T;
-  while(T--) {
+  int t; cin >> t;
+  using p = pair<char, ll>;
+  while(t--){
     int n; cin >> n;
-    vector<pair<char,ll>> right(n);
-    vector<pair<char,ll>> left(n);
+    vector<vector<p>> m(n, vector<p>(2));
     for (auto i = 0; i < n; ++i) {
-      char t; int x;
-      cin >> t >> x;
-      left[i] = {t,x};
-      cin >> t >> x;
-      right[i] = {t, x};
+      char o1, o2;
+      int n1, n2;
+      cin >> o1 >> n1 >> o2 >> n2;
+      m[i][0]= {o1, n1};
+      m[i][1]= {o2, n2};
     }
-    vector<bool> direc(n, false);
-    auto toright= [&right, &left] (int idx) {
-      auto[tl, nl] = left[idx];
-      auto[tr, nr] = right[idx];
-      if(tl == tr) {
-        if (tr == '+' or nr == nl) return 0;
-        else return (nr > nl)? 1:-1;
+    vector<bool> to_left(n, true);
+    auto imp = [&](vector<p> v) {
+      auto[ol, nl] = v[0];
+      auto[opr, nr] = v[1];
+      if (ol == opr and ol == 'x') {
+        return nl != nr; // x2 x3
       }
-      if(tl == 'x') return -1;
-      else return 1;
+      if (ol != opr) return true; // x +
+      return false;
     };
-    direc.back() = toright(n-1)==1;
+    auto lado = [&] (vector<p> v) {
+      auto[ol, nl] = v[0];
+      auto[opr, nr] = v[1];
+      if (ol == opr) // x3 x2
+        return nl == 3;
+      return ol == 'x'; //x +
+    };
     for (auto i = n-2; i >= 0; --i) {
-      int r = toright(i);
-      if (r == 1) direc[i]=true;
-      else if (r == -1) direc[i]=false;
-      else direc[i]=direc[i+1];
+      if (imp(m[i+1])) to_left[i] = lado(m[i+1]);
+      else to_left[i] = to_left[i+1];
     }
-    ll r=1,l=1, inc=0;
-    for (int i = 0; i < n; ++i) {
-      auto [tl, nl]=left[i];
-      ll il = (tl=='+')? nl:(l*(nl-1));
-      auto [tr, nr] = right[i];
-      ll ir = (tr == '+')? nr:(r * (nr-1));
-      inc = il+ir;
-      if(direc[i]) r+=inc;
-      else l+=inc;
+    ll l=1,r=1;
+    int i = 0;
+    for(auto& v: m) {
+      auto[ol, nl] = v[0];
+      auto[opr, nr] = v[1];
+      ll inc = 0;
+      if (ol == '+') inc += nl;
+      else inc += (l)*(nl-1);
+      if (opr == '+') inc += nr;
+      else inc += (r)*(nr-1);
+      // incremento total = inc
+      if(to_left[i++]) l += inc;
+      else r += inc;
     }
-    cout << r +l<<'\n';
+    cout << l + r << '\n';
+    // x +    [0]
+    // + +
+    // + +
+    // + +
+    // + +
+    // x +    [n]
+    //
+    //
+    //
+    //
+    // x2 x3
   }
-
 }
 
 
