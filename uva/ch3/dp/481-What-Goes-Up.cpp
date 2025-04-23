@@ -13,16 +13,6 @@ typedef vector<ll> vl;
 typedef vector<ll_p> vll;   
 typedef vector<ll_t> vlll;
 
-void print(int i, vi p, vi s) {
-  if (p[i] == -1) {
-    cout << s[i] << '\n';
-    return;
-  }
-  print(p[i], p, s);
-  cout << s[i] << '\n';
-}
-
-
 int main () {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
