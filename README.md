@@ -7,7 +7,6 @@ I'm training every day to qualify for the next Regional ICPC. Wish me luck! :D
 
 ## Codeforces
 
-- [ ] 1019 C
 - [ ] 1018 C
 - [ ] 1015 D
 - [ ] 1010 B
@@ -19,7 +18,9 @@ I'm training every day to qualify for the next Regional ICPC. Wish me luck! :D
 - [ ] 978 B
 - [ ] 976 B
 - [ ] 960 C
+- [ ] 1014 D
 
 ##  RPC
 
 - [ ] Última de abril
+- [ ] Abril 27. Especialmente la E
