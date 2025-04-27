@@ -39,8 +39,13 @@ if [[ "$file_type" == "cpp" ]]; then
     echo "######################"
     g++ "$file" -std="$cpp_version" -Wall -Wextra -Wshadow -g \
       -Wconversion -Wfatal-errors \
-      -o "$file_directory/$file_not_ext.out" \
-      && cat "$file_directory/$input_file" | "$file_directory/$file_not_ext.out"
+      -o "$file_directory/$file_not_ext.out"
+    if [ -e "$file_directory/$input_file" ]
+    then
+      cat "$file_directory/$input_file" | "$file_directory/$file_not_ext.out"
+    else
+      "$file_directory/$file_not_ext.out"
+    fi
   else 
     cat "$file_directory/$input_file" | "$file_directory/$file_not_ext.out"
   fi
