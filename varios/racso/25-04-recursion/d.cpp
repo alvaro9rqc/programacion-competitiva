@@ -31,31 +31,33 @@ void f(int orr, int oc, int d, int pr, int pc, int i) {
       if ( pc < oc + d ) {
         //11
         f(orr, oc, (d>>1), pr, pc, i);
-        i= (i+1)%3;
-        if (put[i] == g[orr+d-1][oc+d-1]) i = (i+1)%3;
+        int j = g[orr+d-1][oc+d-1] - 'A';
+        j = (j+1) %3;
+        int k = (j+1) % 3; 
         //12
-        g[orr+d-1][oc+d] = put[i];
-        f(orr, oc+d, (d>>1), orr+d-1, oc+d, i);
+        g[orr+d-1][oc+d] = put[j];
+        f(orr, oc+d, (d>>1), orr+d-1, oc+d, k);
         //21
-        g[orr+d][oc+d-1] = put[i];
-        f(orr+d, oc, (d>>1), orr+d, oc+d-1, i);
+        g[orr+d][oc+d-1] = put[j];
+        f(orr+d, oc, (d>>1), orr+d, oc+d-1, k);
         //22
-        g[orr+d][oc+d] = put[i];
+        g[orr+d][oc+d] = put[j];
         f(orr+d, oc+d, (d>>1), orr+d, oc+d, i);
       } else {
         //12
         f(orr, oc+d, (d>>1), pr, pc, i);
-        i= (i+1)%3;
-        if (put[i] == g[orr+d-1][oc+d]) i = (i+1)%3;
+        int j = g[orr+d-1][oc+d] - 'A';
+        j = (j+1) %3;
+        int k = (j+1) % 3; 
         //11
-        g[orr+d-1][oc+d-1] = put[i];
-        f(orr, oc, (d>>1), orr+d-1, oc+d-1, i);
+        g[orr+d-1][oc+d-1] = put[j];
+        f(orr, oc, (d>>1), orr+d-1, oc+d-1, k);
         //21
-        g[orr+d][oc+d-1] = put[i];
+        g[orr+d][oc+d-1] = put[j];
         f(orr+d, oc, (d>>1), orr+d, oc+d-1, i);
         //22
-        g[orr+d][oc+d] = put[i];
-        f(orr+d, oc+d, (d>>1), orr+d, oc+d, i);
+        g[orr+d][oc+d] = put[j];
+        f(orr+d, oc+d, (d>>1), orr+d, oc+d, k);
       }
     } else {
       //xx
@@ -63,31 +65,33 @@ void f(int orr, int oc, int d, int pr, int pc, int i) {
       if ( pc < oc + d ) {
         //21
         f(orr+d, oc, (d>>1), pr, pc, i);
-        i= (i+1)%3;
-        if (put[i] == g[orr+d][oc+d-1]) i = (i+1)%3;
+        int j = g[orr+d][oc+d-1] - 'A';
+        j = (j+1) %3;
+        int k = (j+1) % 3; 
         //11
-        g[orr+d-1][oc+d-1] = put[i];
-        f(orr, oc, (d>>1), orr+d-1, oc+d-1, i);
+        g[orr+d-1][oc+d-1] = put[j];
+        f(orr, oc, (d>>1), orr+d-1, oc+d-1, k);
         //12
-        g[orr+d-1][oc+d] = put[i];
+        g[orr+d-1][oc+d] = put[j];
         f(orr, oc+d, (d>>1), orr+d-1, oc+d, i);
         //22
-        g[orr+d][oc+d] = put[i];
-        f(orr+d, oc+d, (d>>1), orr+d, oc+d, i);
+        g[orr+d][oc+d] = put[j];
+        f(orr+d, oc+d, (d>>1), orr+d, oc+d, k);
       } else {
         //22
         f(orr+d, oc+d, (d>>1), pr, pc, i);
-        i= (i+1)%3;
-        if (put[i] == g[orr+d][oc+d]) i = (i+1)%3;
+        int j = g[orr+d][oc+d] - 'A';
+        j = (j+1) %3;
+        int k = (j+1) % 3; 
         //11
-        g[orr+d-1][oc+d-1] = put[i];
+        g[orr+d-1][oc+d-1] = put[j];
         f(orr, oc, (d>>1), orr+d-1, oc+d-1, i);
         //12
-        g[orr+d-1][oc+d] = put[i];
-        f(orr, oc+d, (d>>1), orr+d-1, oc+d, i);
+        g[orr+d-1][oc+d] = put[j];
+        f(orr, oc+d, (d>>1), orr+d-1, oc+d, k);
         //21
-        g[orr+d][oc+d-1] = put[i];
-        f(orr+d, oc, (d>>1), orr+d, oc+d-1, i);
+        g[orr+d][oc+d-1] = put[j];
+        f(orr+d, oc, (d>>1), orr+d, oc+d-1, k);
       }
     }
   }
