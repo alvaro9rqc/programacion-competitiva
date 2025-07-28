@@ -1,68 +1,48 @@
-#include <bits/stdc++.h> 
+#include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> ii;
-typedef vector<int> vi;
-typedef vector<ii> vii;
-long long lim = 65537;
-long long LIMI =  LONG_LONG_MAX;
-vector<long long> p;
-vector<long> comp;
-set <long long> ans;
-bitset<65538>bs;
+using ll = unsigned long long;
+using ii = pair<int, int>;
+using vi = vector<int>;
+using vl = vector<ll>;
+#define endl '\n'
+#define dbg(x) cerr << #x << " = " << (x) << endl;
+#define raya cerr << " ==================== " << endl;
+#define FOR(i, a, b) for (auto i = a; i < (b); ++i)
+#define sz(x) (int)(x).size()
+#define all(x) begin(x), end(x)
 
-void sieve() {
-  bs.set();
-  bs[0] = bs[1] = 0;
-  comp.push_back(0);
-  for (long i = 2; i < lim; ++i ) 
-    if (bs[i]) {
-      for (long j = i*i; j < lim; j += i ) {
-        bs[j] = 0;
-        comp.push_back(j);
-      }
-      p.push_back(i);
+int main() {
+  cin.tie(0)->sync_with_stdio(0);
+  cin.exceptions(cin.failbit);
+  const int n = (1<<16);
+  bitset<n> isprime;
+  vl exp(n);
+  isprime.set();
+  isprime[0]= isprime[1] = 0;
+  for (ll i = 2; i < n; ++i) {
+    if (isprime[i]) {
+      for (ll j = i*i; j < n; j+=i) isprime[j] = 0;
     }
-}
-
-long long pot(long long p, long x) {
-  long long m = 1;
-  for (long i = 1; i <= x; ++i) m*=p;
-  return m;
-}
-
-//long long pot(long long p, long x) {
-//
-//}
-
-void backtraking(int i, long long m) {
-  if (i >= p.size() || m * 8 > LIMI / 2) {
-    return;
+    exp[i] = (ll)ceil(64 / (log(i) / log(2)));
   }
-  for (auto x : comp) {
-    cout << m << " "<<x<< '\n';
-    long long y = pot(p[i], x);
-    long long v = m * y;
-    if (v < m) return;
-    //if (m != 1) cout << m << '-'<< '\n';
-    if (v < LIMI && v > 0) {
-      if (v != 1)
-      {
-        ans.insert(v);
-        //cout << v << '\n';
-      }
-      if (v * 2 < LIMI && v * p[i] > 0)
-        backtraking(i+1, v);
-    } else return;
+  vl ans = {1};
+  bitset<n> used;
+  for (ll i = 2; i < n; ++i) {
+    if (used[i]) continue;
+    for (ll j = i*i; j < n; j*=i) used[j]= 1;
+    ll x = i*i*i;
+    for (ll e = 4; e < exp[i]; ++e) {
+      x *= i;
+      //if ( x < 0 ) cerr << "gaaa: " << x <<' '<<i<<' ' << exp[i] <<' ' << e<< '\n';
+      if (isprime[e]) continue;
+      ans.emplace_back(x);
+    }
   }
-}
-
-int main () {
-  ios_base::sync_with_stdio(false);
-  sieve();
-  backtraking(0, 1);
-  //for(int i = 0; i < 10; ++i) cout << comp[i] << '\n';
-  for (const long long& i:ans) cout << i << '\n';
-  return 0;
+  sort(all(ans));
+  for(auto& e: ans) cout << e << '\n';
+  //for (auto i = 0; i < 15; ++i) {
+  //  cout << ans[i] << '\n';
+  //}
 }
 
 
