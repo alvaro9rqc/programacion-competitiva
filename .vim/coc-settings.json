@@ -3,5 +3,5 @@
     "~/.config/nvim/UltiSnips"  // Cambia esto por el directorio donde guardes tus snippets
   ],
   "pyright.enable": false,
-  
+  "clangd.enabled": false,
 }
