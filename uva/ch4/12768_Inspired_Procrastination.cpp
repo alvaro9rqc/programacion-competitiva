@@ -31,7 +31,7 @@ int main() {
     }
     vl dis(n, inf);
     dis[0] = 0;
-    for (int i = 0; i < n-1; i++) {
+    for (int i = 0; i < n; i++) {
       bool mod = false;
       for (int u = 0; u < n; u++) {
         if (dis[u] != inf) {
@@ -40,8 +40,8 @@ int main() {
             ll w = adj[u][j].second;
             ll d = dis[u] + w;
             if (d < dis[v]) {
-              //dis[v] = (i < n - 1 ? d : -inf);
-              dis[v] = d;
+              dis[v] = (i < n - 1 ? d : -inf);
+              //dis[v] = d;
               mod = true;
             }
           }
@@ -65,7 +65,7 @@ int main() {
     for (size_t i = 0; i < dis.size(); i++) {
       ans = min(ans, dis[i]);
     }
-    if (neg) cout << "Unlimited!";
+    if (ans==-inf) cout << "Unlimited!";
     else cout << -ans ;
     cout << '\n';
   }
