@@ -17,12 +17,11 @@ char put[]= {'A', 'B', 'C'};
 
 vector<string> g;
 
-void f(int orr, int oc, int d, int pr, int pc, int i) {
+void f(int orr, int oc, int d, int pr, int pc, char x) {
   if (d == 1) {
-    if (put[i] == g[pr][pc]) i = (i+1) %3;
     char t = g[pr][pc];
-    g[orr][oc] = g[orr][oc+1] = put[i];
-    g[orr+1][oc] = g[orr+1][oc+1] = put[i];
+    g[orr][oc] = g[orr][oc+1] = x;
+    g[orr+1][oc] = g[orr+1][oc+1] = x;
     g[pr][pc] = t;
   } else {
     if (pr < orr + d) {
@@ -30,68 +29,56 @@ void f(int orr, int oc, int d, int pr, int pc, int i) {
       //xx
       if ( pc < oc + d ) {
         //11
-        f(orr, oc, (d>>1), pr, pc, i);
-        int j = g[orr+d-1][oc+d-1] - 'A';
-        j = (j+1) %3;
-        int k = (j+1) % 3; 
+        f(orr, oc, (d>>1), pr, pc, 'A');
         //12
-        g[orr+d-1][oc+d] = put[j];
-        f(orr, oc+d, (d>>1), orr+d-1, oc+d, k);
+        g[orr+d-1][oc+d] = 'B';
+        g[orr+d][oc+d-1] = 'B';
+        g[orr+d][oc+d] = 'B';
+        f(orr, oc+d, (d>>1), orr+d-1, oc+d, 'C');
         //21
-        g[orr+d][oc+d-1] = put[j];
-        f(orr+d, oc, (d>>1), orr+d, oc+d-1, k);
+        f(orr+d, oc, (d>>1), orr+d, oc+d-1, 'C');
         //22
-        g[orr+d][oc+d] = put[j];
-        f(orr+d, oc+d, (d>>1), orr+d, oc+d, i);
+        f(orr+d, oc+d, (d>>1), orr+d, oc+d, 'A');
       } else {
+        g[orr+d-1][oc+d-1] = 'B';
+        g[orr+d][oc+d-1] = 'B';
+        g[orr+d][oc+d] = 'B';
         //12
-        f(orr, oc+d, (d>>1), pr, pc, i);
-        int j = g[orr+d-1][oc+d] - 'A';
-        j = (j+1) %3;
-        int k = (j+1) % 3; 
+        f(orr, oc+d, (d>>1), pr, pc, 'C');
         //11
-        g[orr+d-1][oc+d-1] = put[j];
-        f(orr, oc, (d>>1), orr+d-1, oc+d-1, k);
+        f(orr, oc, (d>>1), orr+d-1, oc+d-1, 'A');
         //21
-        g[orr+d][oc+d-1] = put[j];
-        f(orr+d, oc, (d>>1), orr+d, oc+d-1, i);
+        f(orr+d, oc, (d>>1), orr+d, oc+d-1, 'C');
         //22
-        g[orr+d][oc+d] = put[j];
-        f(orr+d, oc+d, (d>>1), orr+d, oc+d, k);
+        f(orr+d, oc+d, (d>>1), orr+d, oc+d, 'A');
       }
     } else {
       //xx
       //.x
       if ( pc < oc + d ) {
         //21
-        f(orr+d, oc, (d>>1), pr, pc, i);
-        int j = g[orr+d][oc+d-1] - 'A';
-        j = (j+1) %3;
-        int k = (j+1) % 3; 
+        f(orr+d, oc, (d>>1), pr, pc, 'C');
         //11
-        g[orr+d-1][oc+d-1] = put[j];
-        f(orr, oc, (d>>1), orr+d-1, oc+d-1, k);
+        g[orr+d-1][oc+d-1] = 'B';
+        f(orr, oc, (d>>1), orr+d-1, oc+d-1, 'A');
         //12
-        g[orr+d-1][oc+d] = put[j];
-        f(orr, oc+d, (d>>1), orr+d-1, oc+d, i);
+        g[orr+d-1][oc+d] = 'B';
+        f(orr, oc+d, (d>>1), orr+d-1, oc+d, 'C');
         //22
-        g[orr+d][oc+d] = put[j];
-        f(orr+d, oc+d, (d>>1), orr+d, oc+d, k);
+        g[orr+d][oc+d] = 'B';
+        f(orr+d, oc+d, (d>>1), orr+d, oc+d, 'A');
       } else {
         //22
-        f(orr+d, oc+d, (d>>1), pr, pc, i);
-        int j = g[orr+d][oc+d] - 'A';
-        j = (j+1) %3;
-        int k = (j+1) % 3; 
+        f(orr+d, oc+d, (d>>1), pr, pc, 'A');
         //11
-        g[orr+d-1][oc+d-1] = put[j];
-        f(orr, oc, (d>>1), orr+d-1, oc+d-1, i);
+        g[orr+d-1][oc+d-1] = 'B';
+        f(orr, oc, (d>>1), orr+d-1, oc+d-1, 'A');
         //12
-        g[orr+d-1][oc+d] = put[j];
-        f(orr, oc+d, (d>>1), orr+d-1, oc+d, k);
+        g[orr+d-1][oc+d] = 'B';
+        f(orr, oc+d, (d>>1), orr+d-1, oc+d, 'C');
         //21
-        g[orr+d][oc+d-1] = put[j];
-        f(orr+d, oc, (d>>1), orr+d, oc+d-1, k);
+        g[orr+d][oc+d-1] = 'B';
+        f(orr+d, oc, (d>>1), orr+d, oc+d-1, 'C');
       }
     }
   }
@@ -104,7 +91,11 @@ int main () {
   cin >> n;
   g.assign(n, string(n, '.'));
   int r, c; cin>>r>>c;
-  f(0, 0, n/2, r-1, c-1, 0);
+  if (n == 1) {
+    cout << ".\n";
+    return 0;
+  }
+  f(0, 0, n/2, r-1, c-1, 'A');
   for(auto& s: g) 
     cout << s <<'\n';
 
