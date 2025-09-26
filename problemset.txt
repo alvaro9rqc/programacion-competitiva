@@ -1,0 +1,68 @@
+
+
+https://oj.uz/problem/view/JOI18_commuter_pass
+UVa 12644 - Vocabulary
+11573 - Ocean Currents
+UVa 12379 - Central Post Office
+UVa 00589 - Pushing Boxes
+https://www.codechef.com/problems/REVERSE
+UVa 00821 - Page Hopping / easy WF
+https://codeforces.com/contest/1534/problem/F2
+https://usaco.org/index.php?page=viewproblem2&cpid=838
+UVa 12875 - Concert Tour
+UVa 10805 - Cockroach Escape ...
+https://codeforces.com/contest/1627/problem/E
+UVa 01247 - Interstar Transport
+UVa 12783 - Weak Links
+UVa 11280 - Flying to Fredericton
+very hard: https://cses.fi/problemset/task/1685
+https://open.kattis.com/problems/laneswitching
+UVa 00291 - The House of Santa
+UVa 10449 - Traffic
+https://oj.uz/problem/view/JOI21_ho_t4
+https://cses.fi/problemset/task/1133
+UVa 12668 - Attacking rooks
+UVa 10544 - Numbering the Paths
+https://codeforces.com/problemset/problem/1476/E
+UVa 10116 - Robot Motion
+UVa 00558 - Wormholes
+UVa 10350 - Liftless Eme *
+Kattis - oceancurrents
+UVa 12826 - Incomplete Chessboard
+https://cses.fi/problemset/task/1757
+UVa 00907 - Winterim Backpack... *
+usaco
+Kattis - adjoin
+Kattis - blockcrusher
+https://codeforces.com/contest/1833/problem/E
+UVa 01103 - Ancient Messages / world finals
+https://codeforces.com/problemset/problem/920/E
+UVa 01056 - Degrees of ... / WF
+https://codeforces.com/problemset/problem/590/C
+https://atcoder.jp/contests/abc304/tasks/abc304_h
+https://www.acmicpc.net/problem/5250
+https://codeforces.com/problemset/problem/1513/D
+https://codeforces.com/contest/860/problem/D
+https://usaco.org/index.php?page=viewproblem2&cpid=811
+https://codeforces.com/problemset/problem/894/E
+UVa 12363 - Hedge Mazes
+UVa 00872 - Ordering
+https://usaco.org/index.php?page=viewproblem2&cpid=992
+https://usaco.org/index.php?page=viewproblem2&cpid=625
+UVa 10596 - Morning Walk
+
+https://codeforces.com/contest/1239/problem/D
+UVa 10457 - Magic Car
+https://szkopul.edu.pl/problemset/problem/p9uJo01RR9ouMLLAYroFuQ-7/site/?key=statement
+UVa 00869 - Airline Comparison
+https://atcoder.jp/contests/abc282/tasks/abc282_e
+UVa 12950 - Even Obsession
+UVa 10054 - The Necklace *
+
+
+
+
+x UVa 12768 - Inspired Procrastination
+x https://cses.fi/problemset/task/1202
+x https://cses.fi/problemset/task/1681
+x https://oj.uz/problem/view/COCI17_sirni
