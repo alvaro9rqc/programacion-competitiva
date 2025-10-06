@@ -27,7 +27,7 @@ file_type="${file_name##*.}"
 file_not_ext="${file_name%.*}"
 file_directory="$( dirname $file )"
 
-cpp_version="c++23"
+cpp_version="c++20"
 input_file="in"
 
 
