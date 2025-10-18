@@ -1,0 +1,18 @@
+- UVa 12955 
+- https://codeforces.com/problemset/problem/1513/D [submit](https://usaco.guide/gold/mst)
+- https://codeforces.com/problemset/problem/920/E [submit](https://usaco.guide/silver/graph-traversal)
+- UVa 10263
+- https://cses.fi/problemset/task/1160 [submit](https://usaco.guide/plat/binary-jump)
+- UVa 12841
+- UVa 11790 
+- UVa 01595 
+- UVa 10448
+- UVa 00672
+- UVa 01388
+- https://cses.fi/problemset/task/1696
+- UVa 10577
+- UVa 01172
+- UVa 10004 
+- UVa 00427
+
+- Editorial de la A [2020-2021 ICPC Southeastern European Regional Programming Contest (SEERC 2020)](https://drive.google.com/file/d/13WApgof_TR5W-pokndhBQiqdny9wggVw/view)
