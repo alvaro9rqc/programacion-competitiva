@@ -1,163 +1,180 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-using ii = pair<int, int>;
-using iii = tuple<int, int, int>;
-using vi = vector<int>;
-using vl = vector<ll>;
+
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef tuple<int, int, int> iii;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+
 #define dbg(x) cerr << #x << " = " << (x) << endl;
-#define rep(i, a, b) for (auto i = a; i < (b); ++i)
+#define rep(i, a, b) for (int i = (a); i < (b); ++i)
 #define sz(x) (int)(x).size()
-#define all(x) begin(x), end(x)
+#define all(x) (x).begin(), (x).end()
 
 struct PushRelabel {
   struct Edge {
     int dest, back;
     ll f, c;
   };
-  vector<vector<Edge>> g;
+  vector<vector<Edge> > g;
   vector<ll> ec;
   vector<Edge*> cur;
-  vector<vi> hs; vi H;
-  PushRelabel(int n):g(n), ec(n), cur(n), hs(2*n), H(n) {}
+  vector<vi> hs;
+  vi H;
+
+  PushRelabel(int n): g(n), ec(n), cur(n), hs(2*n), H(n) {}
+
   void addEdge(int s, int t, ll cap, ll rcap=0) {
     if (s == t) return;
-    g[s].push_back({t, sz(g[t]), 0, cap});
-    g[t].push_back({s, sz(g[s])-1, 0, rcap});
+    g[s].push_back(Edge{t, (int)g[t].size(), 0, cap});
+    g[t].push_back(Edge{s, (int)g[s].size()-1, 0, rcap});
   }
+
   void addFlow(Edge& e, ll f) {
     Edge &back = g[e.dest][e.back];
     if (!ec[e.dest] && f) hs[H[e.dest]].push_back(e.dest);
     e.f += f; e.c -= f; ec[e.dest] += f;
     back.f -= f; back.c += f; ec[back.dest] -= f;
   }
+
   ll calc(int s, int t) {
     int v = sz(g); H[s] = v; ec[t]=1;
     vi co(2*v); co[0] = v-1;
     rep(i, 0, v) cur[i]=g[i].data();
-    for(Edge& e: g[s]) addFlow(e,e.c);
+    for(size_t i=0;i<g[s].size();++i) addFlow(g[s][i],g[s][i].c);
     for(int hi =0;;) {
       while(hs[hi].empty()) if (!hi--) return -ec[s];
       int u = hs[hi].back(); hs[hi].pop_back();
-      while(ec[u]>0)
-        if (cur[u] == g[u].data() + sz(g[u])) {
-          H[u] = 1e9;
-          for(Edge& e:g[u]) if (e.c && H[u] > H[e.dest]+1)
-            H[u]=H[e.dest]+1, cur[u] = &e;
-          if (++co[H[u]], !--co[hi] && hi < v) 
+      while(ec[u]>0) {
+        if (cur[u] == g[u].data() + g[u].size()) {
+          H[u] = 1000000000;
+          for(size_t i=0;i<g[u].size();++i) {
+            Edge &e = g[u][i];
+            if (e.c && H[u] > H[e.dest]+1)
+              H[u]=H[e.dest]+1, cur[u] = &e;
+          }
+          if (++co[H[u]], !--co[hi] && hi < v) {
             rep(i,0,v) if (hi < H[i] && H[i] < v)
-            --co[H[i]], H[i]=v+1;
+              --co[H[i]], H[i]=v+1;
+          }
           hi=H[u];
         } else if (cur[u]->c && H[u] == H[cur[u]->dest]+1)
           addFlow(*cur[u],min(ec[u], cur[u]->c));
         else ++cur[u];
-    }
-  }
-  bool leftOfMinCut(int a) { return H[a]>=sz(g); }
-  void intervalos(int m, vector<iii>&pares, int piv) {
-    auto& li = g[m];
-    set<ii> seg;
-    for(auto& e: li) {
-      if (e.f > 0) {
-        int eid = e.dest - piv -1;
-        auto& [l,r,p] = pares[eid];
-        //cerr<<": " <<l<<' '<<r<<' '<<p<<'\n';
-        if (e.f+p>=r) {
-          seg.emplace(p,r);
-          e.f-=r-p;
-          p = l+int( e.f );
-          seg.emplace(l, p);
-        }else {
-          seg.emplace(p, p+int(e.f));
-          p+=int(e.f);
-        }
       }
     }
-    //ahora join
-    //for(auto& [a,b]: seg) cerr<<a<<' '<<b<<'\n';
-    auto it = seg.begin();
-    auto [l, r] = *it;
+  }
+
+  bool leftOfMinCut(int a) { return H[a]>=sz(g); }
+
+  void intervalos(int m, vector<iii>& pares, int piv) {
+    vector<Edge>& li = g[m];
+    set<ii> seg;
+    for(size_t i=0;i<li.size();++i) {
+      Edge &e = li[i];
+      if (e.f > 0) {
+        int eid = e.dest - piv -1;
+        int l = get<0>(pares[eid]);
+        int r = get<1>(pares[eid]);
+        int p = get<2>(pares[eid]);
+        if (e.f + p >= r) {
+          seg.insert(ii(p, r));
+          e.f -= (r - p);
+          p = l + (int)(e.f);
+          if (p-l)
+            seg.insert(ii(l, p));
+        } else {
+          seg.insert(ii(p, p + (int)(e.f)));
+          p += (int)(e.f);
+        }
+        get<2>(pares[eid]) = p;
+      }
+    }
+
+    set<ii>::iterator it = seg.begin();
+    int l = it->first, r = it->second;
     vector<ii> ans;
-    while(1) {
-      if (++it == seg.end()) { ans.emplace_back(l,r); break; }
-      auto [nl, nr] = *it;
+    while(true) {
+      ++it;
+      if (it == seg.end()) {
+        ans.push_back(ii(l, r));
+        break;
+      }
+      int nl = it->first, nr = it->second;
       if (r == nl) r = nr;
       else {
-        ans.emplace_back(l, r);
+        ans.push_back(ii(l, r));
         l = nl; r = nr;
       }
     }
-    cout << format("{} ",sz(ans));
-    for (auto i = 0; i < sz(ans); i++) {
-      cout << format("({},{}){}", ans[i].first, ans[i].second, " \n"[i == sz(ans)-1]);
+
+    printf("%d ", sz(ans));
+    for (int i = 0; i < sz(ans); i++) {
+      printf("(%d,%d)%c", ans[i].first, ans[i].second, (i == sz(ans)-1 ? '\n' : ' '));
     }
   }
 };
 
 
 int main() {
-  cin.tie(0)->sync_with_stdio(0);
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   cin.exceptions(cin.failbit);
+
   int n, m;
   int casos = 0;
-  while(1){
+  while(true){
     int s = 0, t = 1, mono=1;
     int total =0;
     map<int, vi> mp;
     cin >> n;
-    if (not n) break;
+    if (!n) break;
     cin >> m;
     PushRelabel pr(3*n+10);
-    for (auto i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       int v, a, b; cin >> v >> a >> b;
       total+=v;
       ++mono;
-      mp[a].emplace_back(mono);
-      mp[b].emplace_back(-mono);
+      mp[a].push_back(mono);
+      mp[b].push_back(-mono);
       pr.addEdge(s, mono, v);
     }
+
     set<int> mon(all(mp.begin()->second));
     int lf = mp.begin()->first;
-    mp.erase(lf);
+    mp.erase(mp.begin());
     int seg_id = mono;
     vector<iii> edgs;
-    for(auto& [k, v]: mp) {
-      //como era
+
+    for(map<int, vi>::iterator it = mp.begin(); it != mp.end(); ++it) {
+      int k = it->first;
+      vi &v = it->second;
+
       ++seg_id;
-      edgs.emplace_back(lf, k, lf);
-      //m-s
+      edgs.push_back(iii(lf, k, lf));
       int cap = k - lf;
-      for(auto& i: mon) pr.addEdge(i, seg_id, cap);
-      //s-t
-      pr.addEdge(seg_id, t, cap*m);
-      for(auto& i: v) {
+      for(set<int>::iterator i = mon.begin(); i != mon.end(); ++i)
+        pr.addEdge(*i, seg_id, cap);
+      pr.addEdge(seg_id, t, (ll)cap * m);
+      for(size_t j=0;j<v.size();++j) {
+        int i = v[j];
         if (i < 0) mon.erase(-i);
         else mon.insert(i);
       }
       lf = k;
     }
+
     ll flow = pr.calc(s, t);
-    cout << "Case "<<++casos;
+    printf("Case %d", ++casos);
     if (total == flow) {
-      cout <<": Yes"  << '\n';
-      for (auto i = 2; i <= mono; i++) {
+      printf(": Yes\n");
+      for (int i = 2; i <= mono; i++) {
         pr.intervalos(i, edgs, mono);
-        //intervalos(i, pr.g[i])
-        //int k = 0;
-        //auto& li = pr.g[i];
-        //for(auto& e: li) 
-        //  if (e.f > 0) ++k;
-        //cout << k <<" ";
-        //int xd = 0;
-        //for(auto& e: li) 
-        //  if (e.f>0) {
-        //    ++xd;
-        //    int idx = e.dest - mono-1;
-        //    cout <<format("({},{}){}", edgs[idx], edgs[idx]+e.f," \n"[xd==k]);
-        //    edgs[idx]+=e.f;
-        //  }
       }
-    } else cout << ": No\n";
+    } else {
+      printf(": No\n");
+    }
   }
 }
 
