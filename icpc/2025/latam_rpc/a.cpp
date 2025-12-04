@@ -24,8 +24,6 @@ int main() {
   int xd=-1, src=-1,tgt=-1; 
   int edg = n*(n-1)/2;
   bool can = 1;
-  int fx, lx;
-  fx=lx=-1;
   cin >> p;
   for (auto i = 0; i < p; i++) {
     int x; cin >> x; --x;
@@ -34,7 +32,7 @@ int main() {
       if (mtx[x][xd]) {can=0;break;}
       mtx[x][xd]=1;
       mtx[xd][x]=1;
-    } else fx = x;
+    } 
     xd = x;
   }
   if (not can) { cout <<"N\n"; return 0; }
@@ -50,7 +48,6 @@ int main() {
     } else tgt=x;
     xd = x;
   }
-  lx = xd;
   if (not can) { cout <<"N\n"; return 0; }
   bool par_src=0, par_tgt=0;
   if (src == -1) swap(src, tgt);
@@ -72,6 +69,10 @@ int main() {
   } else {
     if (src == tgt) can = par_src and par_tgt;
     else can = !par_src and !par_tgt;
+    //dbg(par_src);
+    //dbg(par_tgt);
+    //dbg(src);
+    //dbg(tgt);
     can &= imp==0;
     if (not edg) can = 0;
   }
@@ -80,8 +81,8 @@ int main() {
   auto dfs = [&](auto&& self, int u) -> void{
     vis[u] =1;
     for (auto v = 0; v < n; v++) {
+      if (!vis[v] and !mtx[v][u]) self(self, v);
       if (!mtx[v][u]) --edg, mtx[v][u]=mtx[u][v]=1;
-      if (!vis[v]) self(self, v);
     }
   };
   dfs(dfs,src);
