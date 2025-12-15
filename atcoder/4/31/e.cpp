@@ -72,7 +72,6 @@ int main() {
           auto[d2,x2,y2] = nn(d,x,y,gri[x][y]);
           if (y2 != w) ans=min(ans, cha+1);
           else ans=min(ans,cha);
-          break;
         }
         auto[d2,x2,y2] = nn(d,x,y,gri[x][y]);
         //dbg(vis[d2][x2][y2]);
