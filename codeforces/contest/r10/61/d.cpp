@@ -11,11 +11,16 @@ using vl = vector<ll>;
 #define all(x) begin(x), end(x)
 
 int c(int i, int m, int n) {
-  int x = n&(~m);
+  int x = n&~((1<<(i+1))-1);
   int ans = 0;
-  if ((x|m)==n)++ans;
+  if ((x|m)<=n)++ans;
   x>>=i+1;
   return x+ans;
+  //int ans = 0;
+  //int mk = (1<<(i+1))-1;
+  //for (auto j = 1; j <= n; j++) 
+  //  if ((j&(mk))==m)++ans;
+  //return ans;
 }
 
 int main() {
@@ -48,12 +53,13 @@ int main() {
         ans|=1<<pre;
         lis=ym;
       }
-      dbg(r);
-      dbg(col);
-      dbg(pre);
-      dbg(ans|(1<<pre));
-      dbg(ans);
-      raya;
+      //dbg(r);
+      //dbg(col);
+      //dbg(pre);
+      //dbg(ans|(1<<pre));
+      //dbg(ans);
+      //dbg(sz(lis));
+      //raya;
       ++pre;
     }
     if(!ans)ans|=1<<pre;
