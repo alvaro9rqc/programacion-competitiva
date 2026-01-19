@@ -109,3 +109,115 @@ struct PushRelabel {
   bool leftOfMinCut(int a) { return H[a]>=sz(g); }
 };
 
+template <class T> int sgn(T x) { return (x > 0) - (x < 0); }
+template<class T>
+struct Point {
+  typedef Point P;
+  T x, y;
+  explicit Point(T x=0, T y=0) : x(x), y(y) {}
+  bool operator<(P p) const { return tie(x,y) < tie(p.x,p.y); }
+  bool operator==(P p) const { return tie(x,y)==tie(p.x,p.y); }
+  P operator+(P p) const { return P(x+p.x, y+p.y); }
+  P operator-(P p) const { return P(x-p.x, y-p.y); }
+  P operator*(T d) const { return P(x*d, y*d); }
+  P operator/(T d) const { return P(x/d, y/d); }
+  T dot(P p) const { return x*p.x + y*p.y; }
+  T cross(P p) const { return x*p.y - y*p.x; }
+  T cross(P a, P b) const { return (a-*this).cross(b-*this); }
+  T dist2() const { return x*x + y*y; }
+  double dist() const { return sqrt((double)dist2()); }
+  // angle to x-axis in interval [-pi, pi]
+  double angle() const { return atan2(y, x); }
+  P unit() const { return *this/dist(); } // makes dist()=1
+  P perp() const { return P(-y, x); } // rotates +90 degrees
+  P normal() const { return perp().unit(); }
+  // returns point rotated 'a' radians ccw around the origin
+  P rotate(double a) const {
+    return P(x*cos(a)-y*sin(a),x*sin(a)+y*cos(a)); }
+  friend ostream& operator<<(ostream& os, P p) {
+    return os << "(" << p.x << "," << p.y << ")"; }
+};
+
+
+typedef Point<double> P;
+//Returns the shortest distance between point p and the line segment from point s to e.
+double segDist(P& s, P& e, P& p) {
+  if (s==e) return (p-s).dist();
+  auto d = (e-s).dist2(), t = clamp((p-s).dot(e-s),.0,d);
+  return ((p-s)*d-(e-s)*t).dist()/d;
+}
+
+// ####################
+// ####################
+// ####################
+// ####################
+// Lazy Segment tree
+// ####################
+// ####################
+// ####################
+// ####################
+
+const int inf = 1e9;
+struct Node {
+  Node *l = 0, *r = 0;
+  int lo, hi, mset = inf, madd = 0, val = -inf;
+  Node(int _lo, int _hi) : lo(_lo), hi(_hi) {} // Large interval of −in f
+  Node(vi& v, int _lo, int _hi) : lo(_lo), hi(_hi) {
+    if (lo + 1 < hi) {
+      int mid = lo + (hi - lo) / 2;
+      l = new Node(v, lo, mid);
+      r = new Node(v, mid, hi);
+      val = max(l->val, r->val);
+    } else {
+      val = v[lo];
+    }
+  }
+  int query(int L, int R) {
+    if (R <= lo || hi <= L) return -inf;
+    if (L <= lo && hi <= R) return val;
+    push();
+    return max(l->query(L, R), r->query(L, R));
+  }
+  void set(int L, int R, int x) {
+    if (R <= lo || hi <= L) return;
+    if (L <= lo && hi <= R) {
+      mset = val = x;
+      madd = 0;
+    } else {
+      push();
+      l->set(L, R, x);
+      r->set(L, R, x);
+      val = max(l->val, r->val);
+    }
+  }
+  void add(int L, int R, int x) {
+    if (R <= lo || hi <= L) return;
+    if (L <= lo && hi <= R) {
+      if (mset != inf) mset += x;
+      else madd += x;
+      val += x;
+    } else {
+      push();
+      l->add(L, R, x);
+      r->add(L, R, x);
+      val = max(l->val, r->val);
+    }
+  }
+  void push() {
+    if (!l) {
+      int mid = lo + (hi - lo) / 2;
+      l = new Node(lo, mid);
+      r = new Node(mid, hi);
+    }
+    if (mset != inf) {
+      l->set(lo, hi, mset);
+      r->set(lo, hi, mset);
+      mset = inf;
+    } else if (madd) {
+      l->add(lo, hi, madd);
+      r->add(lo, hi, madd);
+      madd = 0;
+    }
+  }
+};
+
