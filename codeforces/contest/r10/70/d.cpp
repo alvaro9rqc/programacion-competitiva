@@ -21,7 +21,7 @@ ll dp(int i, ll s) {
   if (!edg[i].count(s)) return 0;
   if(memo[i].count(s)) return memo[i][s];
   auto& v = edg[i][s];
-  ll ans = 1;
+  ll ans = sz(v);
   for(auto& j: v) ans+=dp(j, val[i]+val[j]),ans%=mod;
   return memo[i][s]= ans;
 }
@@ -44,9 +44,16 @@ int main() {
       edg[a][val[b]].emplace_back(b);
     }
     ll ans = 0;
+    set<pair<int,ll>> vis;
     for (auto i = 0; i < n; i++) {
-      for(auto& v: adj[i]) 
-      ans+=dp(i,val[v]),ans%=mod;
+      for(auto& v: adj[i]) {
+        if (vis.count({i,val[v]}))continue;
+        ans+=dp(i,val[v]),ans%=mod;
+        //dbg(i);
+        //dbg(v);
+        //dbg(dp(i,val[v]));
+        vis.emplace(i,val[v]);
+      }
     }
     cout << ans <<'\n';
   }
