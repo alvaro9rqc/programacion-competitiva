@@ -30,7 +30,7 @@ int main() {
         dp[p][i]=max(dp[p-prr[i]][i+1]+vrr[i], dp[p][i+1]);
     }
   }
-  vi ans(n);
+  vi ans;
   queue<ii> que;
   que.emplace(m,0);
   vis[m][0]=1;
@@ -39,45 +39,39 @@ int main() {
     bool parte = 0;
     bool salta = 0;
     bool solo = 0;
-    for (auto _ = 0; _ < l; _++) 
-    {
+    for (auto _ = 0; _ < l; _++) {
       auto [p,i]=que.front(); que.pop();
-      dbg(p);
-      dbg(i);
-      raya;
       if(i==n-1) {
-        ans[i]=max(ans[i], (p<prr[i])?0:1);
-        if (l>1) ans[i]=2;
+        if (p<prr[i])salta=1;
+        else solo=1;
         continue;
       }
       ll a = dp[p][i+1];
-      ll b = 0;
+      ll b = -1;
       if (p>= prr[i])
         b = dp[p-prr[i]][i+1]+vrr[i];
-      dbg(a);
-      dbg(b);
-      dbg(i);
-      raya;
       if (b>a) {
-        ans[i]=max(1,ans[i]);
         if (not vis[p-prr[i]][i+1])
           que.emplace(p-prr[i],i+1),vis[p-prr[i]][i+1]=1;
-        if (l>1)ans[i]=2;
+        solo=1;
       } else if (b==a and dp[p][i]!=0) {
-        ans[i]=2;
         if (not vis[p-prr[i]][i+1])
           que.emplace(p-prr[i],i+1), vis[p-prr[i]][i+1]=1;
         if (not vis[p][i+1])
           que.emplace(p,i+1), vis[p][i+1]=1;
-
+        parte=1;
       } else {
         if (not vis[p][i+1])
           que.emplace(p,i+1), vis[p][i+1]=1;
+        salta=1;
       }
     }
+    if (parte or (solo and salta)) ans.emplace_back(2);
+    else if (solo) ans.emplace_back(1);
+    else ans.emplace_back(0);
   }
   char xd[]= {'C','A','B'};
-  dbg(dp[3][4]);
+  //dbg(dp[3][4]);
   for(auto& i: ans) cout << xd[i];
   cout<<'\n';
 }
