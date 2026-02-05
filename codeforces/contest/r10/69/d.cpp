@@ -35,22 +35,25 @@ int main() {
       dp[i][i][0]=rep[0]*i;
     // for (auto i = val[0]+1; i <= k; i++) 
     //   dp[val[0]][i][0]=dp[val[0]][val[0]][0];
+    for(auto& i: val) cout<<i<<' ';
+    cout<<'\n';
     for (auto i = 1; i < sz(val); i++) {
       dp[0][0][i]=0;
       for (auto s = 1ll; s <= min(acs[i],k); s++) {
         for (auto m = s/(i+1)+(s%(i+1)?1:0); m <= min(val[i],s); m++) {
           auto& ans=dp[s][m][i];
-          // dbg(s);
-          // dbg(m);
-          // dbg(i);
-          // dbg(dp[s-m][min(m,val[i-1])][i-1]);
-          // dbg(dp[s][min(m,val[i-1])][i-1]);
-          // dbg(rep[i]*m)
-          // dbg(dp[s][m-1][i]);
-          ans=max(ans, rep[i]*m+dp[s-m][min(m,val[i-1])][i-1]);
+          dbg(s);
+          dbg(m);
+          dbg(i);
+          dbg(dp[s-m][min({s-m,acs[i-1], k,m,val[i-1]})][i-1]);
+          dbg(min({s-m,acs[i-1], k,m,val[i-1]}));
+          dbg(rep[i]*m);
+          dbg(dp[s][m][i-1]);
+          dbg(dp[s][m-1][i]);
+          ans=max(ans, rep[i]*m+dp[s-m][min({s-m,acs[i-1], k,m,val[i-1]})][i-1]);
           ans=max(ans, rep[i]*m+dp[s][m][i-1]);
           ans=max(ans, dp[s][m-1][i]);
-          // dbg(ans);
+          dbg(ans);
         }
         // for (auto m = min(val[i],s)+1; m <= k; m++) 
         //   dp[s][m][i]=dp[s][min(val[i],s)][i];
