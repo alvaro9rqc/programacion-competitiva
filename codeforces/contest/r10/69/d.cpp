@@ -10,68 +10,62 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-
-vector<ii> d;
-//using vvvi = vector<vector<vi>>;
-//vector<vvvi> memo;
-int k, n;
-
-const int MAXK = 361;
-static int memo[2][MAXK][MAXK][MAXK];
-
-
-int dp(bool f, int s, int m, int i) {
-  if (memo[f][s][m][i]!=-1) return memo[f][s][m][i];
-  if (i==sz(d)-1) {
-    if (f)
-      return memo[f][s][m][i] = max(m, min(d[i].first,k-s+m))*(n-d[i].second);
-    else 
-      return memo[f][s][m][i] = max(m, min(d[i].first,k-s))*(n-d[i].second);
-  }
-  int ans = 0;
-  int ap = k -s;
-  int dd= d[i+1].second - d[i].second;
-  if (f) {
-    ans = dd*m+dp(0, s,m,i+1);
-    if (ap and m < d[i].first) ans=max(ans, dp(1, s+1,m+1,i));
-  } else {
-    ans = dd*m+dp(0,s,m,i+1);
-    if (ap > m and m < d[i].first) ans=max(ans,dp(1,s+m+1,m+1,i));
-  }
-  //dbg(f);
-  //dbg(s);
-  //dbg(m);
-  //dbg(i);
-  //dbg(ans);
-  //raya;
-  return memo[f][s][m][i]=ans;
-}
-
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
   int tt; cin >> tt;
   while(tt--) {
-    cin >> n>>k;
-    //memo.assign(2, vvvi(k+1,vector<vi>(k+1,vi(k+1,-1))));
-    vi arr(n); for(auto& i: arr) cin >> i;
-    int a, c,e;
-    a=2;
-    c=arr.front();
-    d= {{arr.front(), 0}};
+    ll n,k; cin >> n >> k;
+    ll xd = 0;
+    cin>>xd;
+    vl val={xd},rep={1}, acs={xd};
     for (auto i = 1; i < n; i++) {
-      c=max(c,arr[i]);
-      if (d.back().first < arr[i]) 
-        d.emplace_back(arr[i], i);
+      ll x; cin >>x;
+      if (val.back()<x) {
+        xd+=x;
+        val.emplace_back(x);
+        acs.emplace_back(acs.back()+xd);
+        rep.emplace_back(1);
+      } else ++rep.back();
     }
-    e=sz(d);
-    for (auto i = 0; i < a; i++) 
-      for (auto j = 0; j < k+1; j++) 
-        for (auto r = 0; r < c+1; r++) 
-          for (auto l = 0; l < e+1; l++) 
-            memo[i][j][r][l]=-1;
-    //for(auto& [v,i]: d) cout <<v<<' '<<i<<'\n';
-    cout << dp(0, 0,0,0)<<'\n';
+    //k = min(xd,k);
+    const ll inf = 1e17;
+    vector<vector<vl>> dp(k+1, vector<vl>(k+1, vl(sz(val),-inf)));
+    for (auto i = 0; i <= val[0]; i++) 
+      dp[i][i][0]=rep[0]*i;
+    // for (auto i = val[0]+1; i <= k; i++) 
+    //   dp[val[0]][i][0]=dp[val[0]][val[0]][0];
+    for (auto i = 1; i < sz(val); i++) {
+      dp[0][0][i]=0;
+      for (auto s = 1ll; s <= min(acs[i],k); s++) {
+        for (auto m = s/(i+1)+(s%(i+1)?1:0); m <= min(val[i],s); m++) {
+          auto& ans=dp[s][m][i];
+          // dbg(s);
+          // dbg(m);
+          // dbg(i);
+          // dbg(dp[s-m][min(m,val[i-1])][i-1]);
+          // dbg(dp[s][min(m,val[i-1])][i-1]);
+          // dbg(rep[i]*m)
+          // dbg(dp[s][m-1][i]);
+          ans=max(ans, rep[i]*m+dp[s-m][min(m,val[i-1])][i-1]);
+          ans=max(ans, rep[i]*m+dp[s][m][i-1]);
+          ans=max(ans, dp[s][m-1][i]);
+          // dbg(ans);
+        }
+        // for (auto m = min(val[i],s)+1; m <= k; m++) 
+        //   dp[s][m][i]=dp[s][min(val[i],s)][i];
+      }
+    }
+    ll ans = 0;
+    xd = min(k,xd);
+    int item = sz(val)-1;
+    for (auto i = 0ll; i <=xd; i++) {
+      for (auto j = 0ll; j <= min(i,val[item]); j++) 
+        ans=max(ans, dp[i][j].back());
+    }
+    cout<<ans<<'\n';
   }
+
 }
+
 
