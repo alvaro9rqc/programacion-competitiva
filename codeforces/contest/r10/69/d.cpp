@@ -3,72 +3,105 @@ using namespace std;
 using ll = long long;
 using ii = pair<int, int>;
 using vi = vector<int>;
-using vl = vector<ll>;
-#define dbg(x) cerr << #x << " = " << (x) << endl;
-#define raya cerr << " ==================== " << endl;
-#define rep(i, a, b) for (auto i = a; i < (b); ++i)
-#define sz(x) (int)(x).size()
-#define all(x) begin(x), end(x)
+
+// Definiciones para claridad
+const int MAXK = 362; // Un poco más de 361 para seguridad en bordes
+// dp[f][s][m]
+// Usamos dos tablas: una para el índice actual (i) y otra para el siguiente (i+1)
+int dp_curr[2][MAXK][MAXK];
+int dp_next[2][MAXK][MAXK];
 
 int main() {
-  cin.tie(0)->sync_with_stdio(0);
-  cin.exceptions(cin.failbit);
-  int tt; cin >> tt;
-  while(tt--) {
-    ll n,k; cin >> n >> k;
-    ll xd = 0;
-    cin>>xd;
-    vl val={xd},rep={1}, acs={xd};
-    for (auto i = 1; i < n; i++) {
-      ll x; cin >>x;
-      if (val.back()<x) {
-        xd+=x;
-        val.emplace_back(x);
-        acs.emplace_back(acs.back()+xd);
-        rep.emplace_back(1);
-      } else ++rep.back();
-    }
-    //k = min(xd,k);
-    const ll inf = 1e17;
-    vector<vector<vl>> dp(k+1, vector<vl>(k+1, vl(sz(val),-inf)));
-    for (auto i = 0; i <= val[0]; i++) 
-      dp[i][i][0]=rep[0]*i;
-    // for (auto i = val[0]+1; i <= k; i++) 
-    //   dp[val[0]][i][0]=dp[val[0]][val[0]][0];
-    for(auto& i: val) cout<<i<<' ';
-    cout<<'\n';
-    for (auto i = 1; i < sz(val); i++) {
-      dp[0][0][i]=0;
-      for (auto s = 1ll; s <= min(acs[i],k); s++) {
-        for (auto m = s/(i+1)+(s%(i+1)?1:0); m <= min(val[i],s); m++) {
-          auto& ans=dp[s][m][i];
-          dbg(s);
-          dbg(m);
-          dbg(i);
-          dbg(dp[s-m][min({s-m,acs[i-1], k,m,val[i-1]})][i-1]);
-          dbg(min({s-m,acs[i-1], k,m,val[i-1]}));
-          dbg(rep[i]*m);
-          dbg(dp[s][m][i-1]);
-          dbg(dp[s][m-1][i]);
-          ans=max(ans, rep[i]*m+dp[s-m][min({s-m,acs[i-1], k,m,val[i-1]})][i-1]);
-          ans=max(ans, rep[i]*m+dp[s][m][i-1]);
-          ans=max(ans, dp[s][m-1][i]);
-          dbg(ans);
+    cin.tie(0)->sync_with_stdio(0);
+    cin.exceptions(cin.failbit);
+
+    int tt; 
+    cin >> tt;
+    while(tt--) {
+        int n, k;
+        cin >> n >> k;
+        vi arr(n); 
+        for(auto& i: arr) cin >> i;
+
+        // --- Lógica de compresión del vector d (igual que tu código) ---
+        int c = arr.front();
+        vector<ii> d = {{arr.front(), 0}};
+        for (int i = 1; i < n; i++) {
+            c = max(c, arr[i]);
+            if (d.back().first < arr[i]) 
+                d.emplace_back(arr[i], i);
         }
-        // for (auto m = min(val[i],s)+1; m <= k; m++) 
-        //   dp[s][m][i]=dp[s][min(val[i],s)][i];
-      }
-    }
-    ll ans = 0;
-    xd = min(k,xd);
-    int item = sz(val)-1;
-    for (auto i = 0ll; i <=xd; i++) {
-      for (auto j = 0ll; j <= min(i,val[item]); j++) 
-        ans=max(ans, dp[i][j].back());
-    }
-    cout<<ans<<'\n';
-  }
+        int sz_d = (int)d.size();
+        
+        // Limpiamos las tablas DP (opcional si llenamos todo, pero buena práctica)
+        // Solo necesitamos limpiar para el rango que usaremos, pero memset es rápido.
+        memset(dp_curr, 0, sizeof(dp_curr));
+        memset(dp_next, 0, sizeof(dp_next));
 
+        // --- DP Iterativo (Bottom-Up) ---
+        // 1. Iteramos i desde el último elemento hacia atrás
+        for (int i = sz_d - 1; i >= 0; --i) {
+            
+            int diff_idx = (i < sz_d - 1) ? (d[i+1].second - d[i].second) : 0;
+            int limit_m = c + 1; // Límite seguro para m
+
+            // 2. Iteramos s y m hacia atrás porque las transiciones aumentan s y m
+            for (int s = k; s >= 0; --s) {
+                for (int m = limit_m; m >= 0; --m) {
+                    
+                    int ap = k - s; // Available points / presupuesto restante
+
+                    // 3. Iteramos para f=0 y f=1
+                    for (int f = 0; f < 2; ++f) {
+                        
+                        // Caso Base: Último elemento (equivale a i == sz(d)-1 en recursivo)
+                        if (i == sz_d - 1) {
+                            int val = 0;
+                            if (f)
+                                val = max(m, min(d[i].first, ap + m)) * (n - d[i].second);
+                            else 
+                                val = max(m, min(d[i].first, ap)) * (n - d[i].second);
+                            
+                            dp_curr[f][s][m] = val;
+                        } 
+                        // Caso Recursivo
+                        else {
+                            int ans = 0;
+                            
+                            // Transición básica: moverse al siguiente índice (i+1) con f=0
+                            // Esto usa dp_next
+                            ans = diff_idx * m + dp_next[0][s][m];
+
+                            // Transiciones complejas (quedarse en i, aumentar s y m)
+                            // Usamos dp_curr porque nos quedamos en el mismo i, 
+                            // pero accedemos a s y m mayores (que ya calculamos porque los bucles van hacia atrás)
+                            if (f) {
+                                if (ap > 0 && m < d[i].first) {
+                                    // dp(1, s+1, m+1, i)
+                                    // Verificamos límites para no salir del array
+                                    if (s + 1 <= k && m + 1 < MAXK)
+                                        ans = max(ans, dp_curr[1][s+1][m+1]);
+                                }
+                            } else {
+                                if (ap > m && m < d[i].first) {
+                                    // dp(1, s+m+1, m+1, i)
+                                    if (s + m + 1 <= k && m + 1 < MAXK)
+                                        ans = max(ans, dp_curr[1][s+m+1][m+1]);
+                                }
+                            }
+                            dp_curr[f][s][m] = ans;
+                        }
+                    }
+                }
+            }
+            
+            // Copiamos el estado actual al "siguiente" para la próxima iteración de i
+            // (Efectivamente movemos la ventana hacia atrás)
+            // memcpy es muy rápido para esto
+            memcpy(dp_next, dp_curr, sizeof(dp_curr));
+        }
+
+        // El resultado final está en el estado inicial: f=0, s=0, m=0, i=0
+        cout << dp_curr[0][0][0] << '\n';
+    }
 }
-
-
