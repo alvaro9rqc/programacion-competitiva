@@ -32,34 +32,28 @@ int main() {
       else 
         return ((grid[0][i+1]=='A')+(grid[1][i]=='A')+(grid[1][i+1]=='A'))>=2;
     };
-    auto f = [&](int i) {
-      return max({
-        win(i,0)+win(i+1,4),
-        win(i,2)+win(i,3),
-        win(i,1)+win(i+1,5)
-      });
-    };
     int inf = 1e9;
-    vector<vi> dp(3, vi(n,-inf));
-    dp[2][n-3]= f(n-3);
+    vector<vi> dp(3, vi(n+2,-inf));
     dp[1][n-2]=win(n-2,4);
     dp[0][n-2]=win(n-2,5);
-    for (auto i = n-6; i >= 0; i--) {
+    dp[2][n]=0;
+    for (auto i = n-3; i >= 0; i--) {
       //2
       dp[2][i]= max({
-        f(i)+dp[2][i+3],
-        win(i,1)+dp[0][i+1],
-        win(i,0)+dp[1][i+1]
+          win(i,1)+dp[0][i+1],
+          win(i,0)+dp[1][i+1],
+          win(i,2)+win(i,3)+dp[2][i+3]
+        
       });
       //1
       dp[1][i]=max(
         win(i,4)+dp[2][i+2],
-        win(i,2)+win(i+1,3)+dp[1][i+4]
+        win(i,2)+win(i+1,3)+dp[1][i+3]
       );
       //0
       dp[0][i]=max(
         win(i,5)+dp[2][i+2],
-        win(i+1,2)+win(i,3)+dp[0][i+4]
+        win(i+1,2)+win(i,3)+dp[0][i+3]
       );
     }
     cout<<dp[2][0]<<'\n';
