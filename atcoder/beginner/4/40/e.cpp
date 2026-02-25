@@ -32,10 +32,8 @@ int main() {
   while(sz(ans) < x) {
     auto [v, ni, ki] = pq.top();pq.pop();
     //ver si es el path
-    if (ki==k-1) {
-      ans.emplace_back(v+arr[ni]);
-      if (ni) 
-        pq.emplace(v, ni-1, ki);
+    if (ki==k) {
+      ans.emplace_back(v);
       continue;
     }
     pq.emplace(v+arr[ni], ni, ki+1);
