@@ -10,48 +10,55 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-const ll mod = 10007;
-ll fe(ll b, ll e) {
+ll K, M;
+
+vl crr,lrr;
+
+ll fe(ll b, ll e, ll m) {
   ll r = 1;
   while(e) {
-    if(e&1) r*=b,r%=mod;
+    if(e&1) r*=b,r%=m;
     e>>=1;
-    b*=b;b%=mod;
+    b*=b;b%=m;
   }
   return r;
 }
 
-ll prec[]={0,1,11,111};
+ll pot11[] = {0, 1,11,111};
+ll f11(ll n, ll m) {
+  if (n<4) return pot11[n];
+  ll x = f11(n/2,m);
+  if (n&1) return ((x*10+1)*fe(10,n/2,m)+x)%m;
+  else return (x*fe(10,n/2,m)+x)%m;
+}
 
-ll f11(ll l) {
-  if (l<4)return prec[l];
-  ll x = l/2;
-  ll rx = f11(x);
-  if(l-x==x) return (rx+rx*fe(10,x))%mod;
-  else return (rx+rx*fe(10,x+1)+1)%mod;
+ll fn(ll m) {
+  ll acc=0;
+  ll ans = 0;
+  for (auto i = 0; i < K; i++) {
+    ans+=crr[i]*f11(lrr[i],m)*fe(10,acc,m)%m;
+    ans%=m;
+    acc+=lrr[i];
+  }
+  return ans;
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
-  // dbg(fe(10,5));
-  int k;cin>>k;
-  ll m;cin>>m;m=fe(m,mod-2);
-  ll n = 0;
-  vector<pair<ll,ll>> xd(k);
-  for(auto& [c,l]: xd) cin>>c>>l;
-  reverse(all(xd));
-  ll acc=0;
-  for(auto& [c,l]: xd) {
-    n+=f11(l)*c*fe(10,acc);
-    n%=mod;
-    acc+=l;
+  cin>>K>>M;
+  crr.resize(K);
+  lrr.resize(K);
+  for (auto i = 0; i < K; i++) {
+    cin>>crr[i]>>lrr[i];
   }
-  cout<<(n*m%mod)<<'\n';
-  dbg(m);
-  dbg(n);
-  dbg(316227766ll*m%mod);
-  dbg(fe(45175395,mod-2));
-  dbg(fe(10,mod-2));
+  reverse(all(crr));
+  reverse(all(lrr));
+  ll mod = 10007;
+  // dbg(fn(mod));
+  ll ans = (fn(mod)-fn(M)%mod+mod)%mod;
+  ans*=fe(M,mod-2,mod);
+  ans%=mod;
+  cout<< (ans)<<'\n';
 }
 
