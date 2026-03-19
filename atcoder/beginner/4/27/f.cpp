@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include <bits/extc++.h>
+#pragma GCC optimize("O3,unroll-loops")
 using namespace std;
 using ll = long long;
 using ii = pair<int, int>;
@@ -10,55 +12,69 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-ll n,m,mitad;
-vl v;
+// To use most b i t s rather than j u s t the lowest ones :
+struct chash { // large odd number for C
+  uint64_t C = ll(4e18 * acos(0)) | 71+ chrono::steady_clock::now().time_since_epoch().count();
+  ll operator()(ll x) const { return __builtin_bswap64(x*C); }
+};
+// __gnu_pbds::gp_hash_table<ll,int,chash> h({},{},{},{},{1<<16});
+using h_m = __gnu_pbds::gp_hash_table<ll,ll,chash>;
 
-vector<unordered_map<ll,ll>> m_n,m_1;
+int n; 
+ll m;
+vector<h_m> memo;
+vl val;
 
-
-ll dp_n(ll i, ll s) {
+ll dp(ll s, int i) {
   if(i>=n) return s==0;
-  if(m_n[i].count(s))return m_n[i][s];
-  //lo tomo o no
-  return m_n[i][s]=dp_n(i+2, (s+v[i])%m) + dp_n(i+1,s);
+  if(memo[i].find(s) != memo[i].end()) return memo[i][s];
+  ll ans=0;
+  ans+=dp(s,i+1);
+  ans+=dp((s+val[i])%m,i+2);
+  return memo[i][s]=ans;
 }
 
-ll dp_1(ll i, ll s) {
-  if(i>mitad) {
-    auto it = m_1[i].find((m-s)%m);
-    return (it != m_1[i].end())?it->second:0;
+pair<h_m, h_m> dp2(vl& v) {
+  h_m pen, ult;
+  pen[0]=1;
+  ult[0]=1;
+  ult[v[0]]+=1;
+  for (auto i = 1; i < sz(v); i++) {
+    h_m now=ult;
+    for(auto& [s,r]: pen) 
+    now[(s+v[i])%m]+=r;
+    swap(pen,ult);
+    ult=now;
   }
-  // if(m_1[i].count(s))return m_1[i][s];
-  auto it = m_1[i].find(s);
-  if(it != m_1[i].end()) return it->second;
-  //lo tomo o no
-  return m_1[i][s]=dp_1(i+2, (s+v[i])%m) + dp_1(i+1,s);
-}
-
-void dp_2() {
-  m_1[n][0]=1;
-  m_1[n-1][0]=1;
-  m_1[n-1][v[n-1]]+=1;
-  for (auto i = n-2; i > mitad; i--) {
-    for(auto& [s,r]: m_1[i+1]) m_1[i][s]=r;
-    for(auto& [s,r]: m_1[i+2]) m_1[i][(s+v[i])%m]+=r;
-  }
+  return {pen,ult};
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
-  //m_1 len = n+1
   cin>>n>>m;
-  v.resize(n);for(auto& i: v) cin>>i;
+  val.resize(n);
+  for(auto& i: val) cin>>i;
   if(n<10) {
-    m_n.resize(n);
-    cout<<dp_n(0,0)<<'\n';
-  } else {
-    m_1.resize(n+1);
-    mitad=n/2;
-    dp_2();
-    cout<<dp_1(0,0)<<'\n';
+    memo.assign(n,h_m());
+    cout<<dp(0,0)<<'\n';
+    return 0;
   }
+  vl L(n/2), R(n-n/2);
+  for (auto i = 0; i < n/2; i++) L[i]=val[i];
+  for (auto i = n-1; i >= n-sz(R); i--) R[n-1-i]=val[i];
+  auto[pl,ul]=dp2(L);
+  auto[pr,ur]=dp2(R);
+  ll ans = 0;
+  for(auto& [s,r]: pl) 
+  if(ur.find((m-s)%m) != ur.end())
+    ans+=r*ur[(m-s)%m];
+  for(auto [s,r]: ul) {
+    if(pl.find(s) != pl.end()) r-=pl[s];
+    if(pr.find((m-s)%m) != pr.end()) 
+      ans+=r*pr[(m-s)%m];
+  }
+  cout<<ans<<'\n';
+  return 0;
 }
 
