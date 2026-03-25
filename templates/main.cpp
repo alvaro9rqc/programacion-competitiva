@@ -7,6 +7,7 @@
 // ####################
 // ####################
 // ####################
+
 struct UF {
 	vi e;
 	UF(int n) : e(n, -1) {}
@@ -254,7 +255,16 @@ struct FT {
   }
 };
 
-// TODO: fix the rep
+// ####################
+// ####################
+// ####################
+// ####################
+// SubMatrix
+// ####################
+// ####################
+// ####################
+// ####################
+
 template<class T>
 struct SubMatrix {
   vector<vector<T>> p;
@@ -270,3 +280,60 @@ struct SubMatrix {
   }
 };
 
+// ####################
+// ####################
+// ####################
+// ####################
+// Hash
+// ####################
+// ####################
+// ####################
+// ####################
+
+#include <bits/extc++.h>
+// To use most b i t s rather than j u s t the lowest ones :
+struct chash { // large odd number for C
+  uint64_t C = ll(4e18 * acos(0)) | 71;
+  ll operator()(ll x) const { return __builtin_bswap64(x*C); }
+};
+// __gnu_pbds::gp_hash_table<ll,int,chash> h({},{},{},{},{1<<16});
+using h_m = __gnu_pbds::gp_hash_table<ll,ll,chash>;
+
+// ####################
+// ####################
+// ####################
+// ####################
+// MergeTree
+// ####################
+// ####################
+// ####################
+// ####################
+
+struct MergeTree {
+  int n;
+  vector<vector<int>> t;
+  MergeTree(const vector<int> &a) : n(sz(a)), t(4*n) {
+    build(a, 1, 0, n-1);
+  }
+  void build(const vector<int> &a, int v, int l, int r) {
+    if (l == r) t[v] = {a[l]};
+    else {
+      int m = (l+r)/2;
+      build(a, v*2, l, m);
+      build(a, v*2+1, m+1, r);
+      merge(all(t[v*2]), all(t[v*2+1]),
+            back_inserter(t[v]));
+    }
+  }
+  int qry(int v, int tl, int tr, int l, int r, int x) {
+    if (l > r) return 0;
+    if (l == tl && r == tr)
+      return upper_bound(all(t[v]), x) - t[v].begin();
+    int m = (tl+tr)/2;
+    return qry(v*2, tl, m, l, min(r,m), x)
+    + qry(v*2+1, m+1, tr, max(l,m+1), r, x);
+  }
+  int query(int l, int r, int x) {
+    return qry(1, 0, n-1, l, r, x);
+  }
+};
