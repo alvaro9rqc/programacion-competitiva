@@ -16,12 +16,11 @@ struct FT {
   vector<ll> s;
   FT(int n) : s(n,inf) {}
   void update(int pos, ll dif) { // a [pos] += dif
-    for (; pos < sz(s); pos |= pos + 1) s[pos]= min(s[pos],dif);
+    for (; pos < sz(s); pos |= pos + 1) s[pos] = min(s[pos],dif);
   }
   ll query(int pos) { // sum of values in [0 , pos)
     ll res = inf;
-    for (; pos > 0; pos &= pos - 1)
-      res=min(s[pos-1],res);
+    for (; pos > 0; pos &= pos - 1) res = min(res,s[pos-1]);
     return res;
   }
 };
@@ -31,20 +30,19 @@ int main() {
   cin.exceptions(cin.failbit);
   int tt;cin>>tt;
   while(tt--) {
-    int n, q;cin>>n>>q;
-    vi arr(n); for(auto& i: arr) cin>>i,--i;
-    FT f1(n),f2(n),f3(n);
-    int m=n-1;
+    int n,q;cin>>n>>q;
+    vi val(n);
+    for(auto& i: val) cin>>i;
+    FT f1(n+1), f2(n+1), f3(n);
     for (auto i = n-1; i >= 0; i--) {
-      f1.update(arr[i], i);
-      if (i<=n-2) f2.update(arr[i], f1.query(arr[i]));
-      if (i<=n-3) f3.update(m-i,f2.query(arr[i]));
+      f1.update(val[i],i);
+      f2.update(val[i], f1.query(val[i]));
+      f3.update(n-i-1 , f2.query(val[i]));
     }
-    for (auto _ = 0; _ < q; _++) {
-      int l, r;cin>>l>>r;
+    for (auto i = 0; i < q; i++) {
+      int l,r;cin>>l>>r;
       --l,--r;
-      ll u = f3.query(m+1-l);
-      cout<<(u<=r?"no":"yes")<<'\n';
+      cout<<(f3.query(n-l)>r?"yes":"no")<<'\n';
     }
   }
 }
