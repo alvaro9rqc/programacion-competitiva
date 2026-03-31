@@ -16,27 +16,38 @@ int main() {
   int tt;cin>>tt;
   while(tt--) {
     int n;cin>>n;
-    vl arr(n); for(auto& i: arr) cin>>i;
-    map<ll,ll> omp;
-    for (auto i = 0; i < n; i++) ++omp[arr[i]];
-    ll mex = 0;
-    for(auto& [k,v]: omp){
-      if(k==mex)++mex;
+    vl mex(n);
+    vl val(n);
+    for(auto& i: val) cin >> i;
+    set<ll> ost;
+    ll ve=0;
+    auto ev=[&](ll x) {
+      ost.emplace(x);
+      while(ost.count(ve)) ++ve;
+    };
+    int idx = -1;
+    for (auto i = 0; i < n; i++) 
+      if(val[i]==0) {idx=i;break;}
+    ll ans  = 0;
+    for (auto i = n-1; i >= 0; i--) {
+      if(val[i]!=0) {
+        ev(val[i]);
+        ++ans;
+      } else if(idx==i) {
+        ev(0);
+      }
+      mex[i]=ve;
     }
-    if (mex==0) {
-      cout<<n<<'\n';
-      continue;
-    }
+    ll m = 1e10;
     bool can = 1;
-    for (auto i = 0; i < n; i++) {
-      if(arr[i]==0) break;
-      if(--omp[arr[i]]==0 and arr[i]<mex) mex=arr[i];
-      if (arr[i]<mex) {
-        can=0;
-        break;
+    for (auto i = 0; i < n-1 and val[i]!=0; i++) {
+      if(val[i]!=0) {
+        m=min(m,val[i]);
+        if(m<mex[i+1]) {can=0;break;}
       }
     }
-    cout<<(can?(n-omp[0]+1):n-omp[0])<<'\n';
+    can&=(idx!=-1); 
+    cout<<ans+can<<'\n';
   }
 }
 
