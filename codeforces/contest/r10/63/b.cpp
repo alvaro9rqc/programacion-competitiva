@@ -16,43 +16,31 @@ int main() {
   int tt;cin>>tt;
   while(tt--) {
     int n;cin>>n;
-    string s(n,'0');
-    vi arr(n); for(auto& i: arr) cin>>i;
-    vi sup(n), inf(n);
-    sup.back()=n-1;
-    inf.back()=n-1;
-    for (auto i = n-2; i >= 0; i--) {
-      if (arr[i]<arr[i+1]) {
-        sup[i]=sup[i+1];
-        inf[i]=i;
-      } else {
-        inf[i]=inf[i+1];
-        sup[i]=i;
-      }
+    vi val(n); for(auto& i: val) cin >> i;
+    string s;cin>>s;
+    int bi,ei;
+    bi=ei=0;
+    for (auto i = 0; i < n; i++) {
+      if(val[i]==1)bi=i;
+      else if (val[i]==n)ei=i;
     }
-    string x;cin>>x;
-    int a =0;
-    bool can = 1;
-    vector<ii> ans;
-    if (x[0]=='1' or x.back()=='1') can=0;
-    for (auto i = 1; i < n-1; i++) {
-      if (s[i]=='0' and x[i]=='1') {
-        if (a++<5) {
-          int l = max(sup[i-1], inf[i-1]);
-          ans.emplace_back(i, l+1);
-          for (auto j = i; j < l; j++) {
-            s[i]='1';
-          }
-        } else{
-          can=0;
-          break;
-        }
-      }
+    if(s[bi]=='1' or s[ei]=='1' or s.front()=='1' or s.back()=='1') {
+      cout<<"-1\n";continue;
     }
-    if (can) {
-      cout<<sz(ans)<<'\n';
-      for(auto& [a,b]: ans) cout<<a<<' '<<b<<'\n';
-    } else cout<<"-1\n";
+    ++bi,++ei;
+    cout<<format("5\n"
+                 "{} {}\n"
+                 "{} {}\n"
+                 "{} {}\n"
+                 "{} {}\n"
+                 "{} {}\n",
+                 1, bi,
+                 min(bi,ei), max(ei,bi),
+                 bi, n,
+                 1, ei,
+                 ei, n
+                 );
+
   }
 }
 
