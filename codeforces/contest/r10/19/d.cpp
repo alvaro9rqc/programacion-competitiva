@@ -20,33 +20,34 @@ int main() {
     vi ans(n), val(n); for(auto& i: val) cin >> i,ma=max(ma,i);
     deque<int> deq;
     for (auto i = 1; i < n+1; i++) deq.emplace_back(i);
-    auto p=[&](int i, int lev) {
-      auto it=deq.begin();
-      if(lev&1) it=--deq.end();
-      ans[i]=*it;
-      deq.erase(it);
+    auto f=[&](vi& v, bool rigth, int lev) {
+      int del = rigth?1:-1;
+      for (auto i = rigth?0:sz(v)-1; (rigth?(i<sz(v)):i>=0); i+=del) {
+        if(lev&1) {
+          ans[v[i]]=deq.back(); deq.pop_back();
+        } else {
+          ans[v[i]]=deq.front(); deq.pop_front();
+        }
+      }
     };
     for (auto i = 1; i <= ma; i++) {
-      int l=0,r=n-1;
-      bool left = 1;
-      while(l<=r) {
-        //left
-        if(left) 
-          while(left) {
-            if(l<n and val[l]==i) p(l,i);
-            else left=0;
-            ++l;
-          } 
-        else 
-          while(not left) {
-            if(r>=0 and val[r]==i) p(r,i);
-            else left=1;
-            --r;
-          }
+      vector<vi> comp;
+      int lat=0;
+      int xd = 0;
+      for (auto j = 0; j < n; j++) {
+        if(val[j]>i or val[j]==-1) xd=j,lat=0;
+        if(val[j]!=i)
+          continue;
+        if(lat)comp.back().emplace_back(j);
+        else comp.emplace_back(1,j);
+        lat=1;
+      }
+      for(auto& v: comp) {
+        f(v,v.back()<xd,i);
       }
     }
     for (auto i = 0; i < n; i++) 
-      if(val[i]==-1) p(i,i);
+      if(val[i]==-1) ans[i]=deq.front();
     for(auto& i: ans) cout<<i<<' ';
     cout<<'\n';
   }
