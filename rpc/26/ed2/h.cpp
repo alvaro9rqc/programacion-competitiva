@@ -38,7 +38,7 @@ int main() {
         x=ni;
       }
     }
-    dbg(kad[i]);
+    // dbg(kad[i]);
   }
 
   ll sum=0;
@@ -47,18 +47,21 @@ int main() {
   for (auto i = 1; i < n; i++) {
     sum+=kad[(i+w-1)%n]-kad[i-1];
     alt.emplace_back(sum);
+    // dbg(sum);
+  }
+  vl ava(2*n);
+  for (auto i = 0ll,x=0ll; i < n-h+1; i++) {
+    ++ava[x];
+    --ava[x+(n-w+1)];
+    x=(x+k)%n;
   }
   ll ans = alt.front();
-  for (auto i = 0; i < n; i++) {
-    ll a = i+w-1;
-    if(a<n) {
-      ans=max(ans,alt[i]);
-      dbg(i);
-    } else if ( ((a-n)/k)+((a-n)%k?1:0) + h < n){
-      ans=max(ans,alt[i]);
-      dbg("ga");
-      dbg(i);
-    }
+  ll xd=0;
+  for (auto i = 0; i < sz(ava); i++) {
+    xd+=ava[i];
+    // dbg(i);
+    // dbg(ava[i])
+    if(xd>0) ans=max(ans,alt[i%n]);
   }
   cout<<ans<<'\n';
 }
