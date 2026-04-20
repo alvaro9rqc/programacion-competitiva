@@ -27,6 +27,11 @@ int main() {
     int n;cin>>n;
     vi p(n); for(auto& i: p) cin >> i;  
     vi val(n); for(auto& i: val) cin >> i;  
+    vector<vector<bool>> mtc(n,vector<bool>(n));
+    for (auto i = 0; i < n; i++) {
+      for (auto j = i+1; j < n; j++) 
+        if(p[j]>p[i])mtc[i][j-i]=1;
+    }
     auto pv = fv(p);
     bool can=1;
     for (auto i = 0; i < n; i++) {
@@ -42,16 +47,22 @@ int main() {
     for (auto i = n-2; i >= 0; i--) {
       for(auto& [k,v]: lis) ++v;
       auto it=lis.end();
-      for (auto j = 0; j < val[i]; j++){
+      int c = 0;
+      int nk=sz(lis)+1;
+      while(c!=val[i]){
         --it;
         it->first++;
+        if(mtc[i][it->second])++c;
+        --nk;
+        if(it==lis.begin()) break;
       }
-      lis.emplace(it,n-i-val[i],0);
+      if(c!=val[i]){can=0;break;}
+      lis.emplace(it,nk,0);
     }
     vi ans(n);
     for(auto& [k,i]: lis) ans[i]=k;
-    auto qv=fv(ans);
-    if(qv==val) for(auto& i: ans) cout<<i<<' ';
+    // auto qv=fv(ans);
+    if(can) for(auto& i: ans) cout<<i<<' ';
     else cout<< -1;
     cout<<'\n';
     // raya;
