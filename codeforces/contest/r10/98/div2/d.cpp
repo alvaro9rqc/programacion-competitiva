@@ -22,12 +22,17 @@ using h_m = __gnu_pbds::gp_hash_table<int,int,chash>;
 void solve() {
   int n;cin>>n;
   vector<ii> par(n);
-  set<int>setx,sety;
-  for(auto& [a,b]: par) cin >> a>>b,setx.emplace(a), sety.emplace(b);
+  vector<int>setx,sety;
+  // o nlogn
+  for(auto& [a,b]: par) cin >> a>>b,setx.emplace_back(a), sety.emplace_back(b);
+  sort(all(setx));
+  sort(all(sety));
+  auto jajax=unique(all(setx));
+  auto jajay=unique(all(sety));
   h_m xid,yid;
-  for(auto [it,i]=tuple{setx.begin(),0}; it!=setx.end();++it,++i) 
+  for(auto [it,i]=tuple{setx.begin(),0}; it!=jajax;++it,++i) 
     xid[*it]=i;
-  for(auto [it,i]=tuple{sety.begin(),0}; it!=sety.end();++it,++i) 
+  for(auto [it,i]=tuple{sety.begin(),0}; it!=jajay;++it,++i) 
     yid[*it]=i;
   vi hx(sz(setx),-1), lx(sz(setx),n+100);
   vi hcx(sz(setx),-1), lcx(sz(setx),n+100);
