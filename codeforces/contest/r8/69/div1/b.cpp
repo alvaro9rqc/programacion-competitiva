@@ -10,29 +10,62 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-int n, u, leaf, last;
-vector<ii> ans;
-vector<vi> adj;
-vector<bool> vis;
-
-bool dfs(int v, int p) {
-  vis[v]=1;
-  for(auto& x: adj[v]) {
-    if(x==u and u!=p) {
-      leaf=v;
-      ans.emplace_back(v,u);
-      return 1;
-    } else {
-      if(vis[x]) continue;
-      auto a = dfs(x,v);
-      if(a) {
-        ans.emplace_back(v,x);
-        last=x;
-        return 1;
+void solve() {
+  vector<vi> adj;
+  int n,m;cin>>n>>m;
+  adj.assign(n,vi());
+  for (auto i = 0; i < m; i++) {
+    int u,v;cin>>u>>v;
+    --u,--v;
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  for (auto i = 0; i < n; i++) {
+    if(sz(adj[i])<4)continue;
+    vector<ii> ans;
+    vi p(n),vis(n,0),pxd(n);
+    p[i]=i;
+    auto f = [&](int u) {
+      int l = u;
+      while(u!=i) {
+        ans.emplace_back(u, p[u]);
+        l=u;u=p[u];
+      }
+      return l;
+    };
+    queue<int> que;
+    // que.emplace(i,i);
+    vis[i]=1;
+    for(auto& u: adj[i]) {
+      que.emplace(u);
+      vis[u]=1;
+      p[u]=i;
+      pxd[u]=u;
+    }
+    int c1=-1,c2=-1;
+    while (sz(que) and c1==-1) {
+      auto u = que.front(); que.pop();
+      for(auto& v: adj[u]) {
+        if(not vis[v]) que.emplace(v),vis[v]=1,p[v]=u,pxd[v]=pxd[u];
+        else if(pxd[v]!=pxd[u] and v!=i) {
+          ans.emplace_back(v,u);
+          c1=f(u);
+          c2=f(v);
+          break;
+        }
       }
     }
+    if(c1==-1)continue;
+    int xd=0;
+    for (auto j = 0; j < sz(adj[i]) and xd!=2; j++) {
+      if(adj[i][j]!=c1 and adj[i][j]!=c2) ++xd,ans.emplace_back(i,adj[i][j]);
+    }
+    cout<<"YES\n";
+    cout<<sz(ans)<<'\n';
+    for(auto& [u,v]: ans) cout<<u+1<<' '<<v+1<<'\n';
+    return;
   }
-  return 0;
+  cout<<"NO\n";
 }
 
 int main() {
@@ -40,31 +73,7 @@ int main() {
   cin.exceptions(cin.failbit);
   int tt;cin>>tt;
   while(tt--) {
-    int m;cin>>n>>m;
-    adj.assign(n,vi());
-    ans.resize(0);
-    for (auto i = 0; i < m; i++) {
-      int x,y;cin>>x>>y;
-      --x,--y;
-      adj[x].emplace_back(y);
-      adj[y].emplace_back(x);
-    }
-    bool can=0;
-    for (auto i = 0; i < n; i++) {
-      vis.assign(n,0);
-      u=i;
-      if(sz(adj[i])>=4 and dfs(i,i)) {
-        int xd = 0;
-        for(auto& x: adj[i]) 
-        if(x!=leaf and x!=last and xd!=2) ans.emplace_back(i,x),++xd;
-        cout<<"YES\n";
-        cout<<sz(ans)<<'\n';
-        for(auto& [a,b]: ans) cout<<a+1<<' '<<b+1<<'\n';
-        can=1;
-        break;
-      }
-    }
-    if(!can)cout<<"NO\n";
+    solve();
   }
 }
 
