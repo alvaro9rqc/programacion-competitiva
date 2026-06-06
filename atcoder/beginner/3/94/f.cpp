@@ -10,46 +10,75 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-int n;
-vector<vi> adj_4,adj;
-vi dp;
+vector<vector<ii>> memo;
+vector<vector<ii>> hlp;
+vector<vi> adj1,adj;
 
-int dfs(int u, int p) {
-  if(dp[u]!=-1)return dp[u];
-  if(sz(adj_4[u])<4)return dp[u]=0;
-  dp[u]=1;
-  vi alt;
-  for(auto& v: adj[u]) {
-    if(v==p)continue;
-    alt.emplace_back(dfs(v,u));
+void dfs(int u, int p) {
+  for(auto& v: adj1[u]) {
+    if(v!=p) {
+      adj[u].emplace_back(v);
+      dfs(v,u);
+    }
+  } 
+}
+
+pair<int,bool> dp(bool c, int u) {
+  if(memo[c][u].first!=-2) return memo[c][u];
+  auto& [ans,l] = memo[c][u];
+  if(!sz(hlp[u])){
+    for(auto& v: adj[u]) hlp[u].emplace_back(dp(1,v));
+    sort(all(hlp[u]));
+    reverse(all(hlp[u]));
   }
-  sort(alt.rbegin(), alt.rend());
-  for (auto i = 0; i < min(3,sz(alt)); i++) dp[u]+=alt[i];
-  return dp[u];
+  if(c) {
+    ans=1;
+    l=0;
+    if(sz(hlp[u])>=3) {
+      for (auto i = 0; i < 3; i++) ans+=hlp[u][i].first;
+      l=1;
+    }
+  } else {
+    ans=-1;
+    if(sz(hlp[u])>=4){
+      ans=1;
+      for (auto i = 0; i < 4; i++) ans+=hlp[u][i].first;
+      l=1;
+    } else {
+      for(auto& [v,lj]: hlp[u]) if(lj)ans=max(ans,1+v),l=1;
+    }
+  }
+  return {ans,l};
+}
+
+void solve() {
+  int n;cin>>n;
+  adj.assign(n, vi());
+  adj1.assign(n, vi());
+  memo.assign(2, vector<ii>(n,{-2,0}));
+  hlp.assign(n, vector<ii>());
+  for (auto i = 0; i < n-1; i++) {
+    int u,v;cin>>u>>v;
+    --u,--v;
+    adj1[u].emplace_back(v);
+    adj1[v].emplace_back(u);
+  }
+  dfs(0,0);
+  int ans = -1;
+  for (auto i = 0; i < n; i++) {
+    auto [p,l] = dp(0,i);
+    if(l)ans=max(p,ans);
+  }
+  cout<<ans<<'\n';
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
   cin.exceptions(cin.failbit);
-  cin>>n;
-  adj_4.assign(n,vi());
-  adj.assign(n,vi());
-  dp.assign(n,-1);
-  for (auto i = 0; i < n-1; i++) {
-    int x,y;cin>>x>>y;--x,--y;
-    adj_4[x].emplace_back(y);
-    adj_4[y].emplace_back(x);
+  int tt=1;
+  // cin>>tt;
+  while(tt--) {
+    solve();
   }
-  for (auto i = 0; i < n; i++) {
-    if(sz(adj_4[i])<4)continue;
-    for(auto& v: adj_4[i]) {
-      if(sz(adj_4[v])>=4) adj[i].emplace_back(v);
-    }
-  }
-  int ans = 0;
-  for (auto i = 0; i < n; i++) {
-    ans=max(ans,dfs(i,i));
-  }
-  cout<<(ans?ans*3+2:-1)<<'\n';
 }
 
