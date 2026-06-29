@@ -76,6 +76,13 @@ _Cómo atacar el problema cuando no sabes por dónde empezar._
     rango, a veces el resultado no depende de un `l` o `r` escogido, sino solo
     de cada `a_i`
 
+  - hay pocos algoritmos para poder resolverlos: 
+    - sliding window
+    - prefix sums
+    - kadane
+    - segment tree/Fenwick (si hay consultas)
+    - sparce table
+
 - **Existencia:**
   - Si te piden un número mayor a cero que no comparta bits con otro, las
     potencias de 2 () son tu salvación. Modelar matemáticamente la condición de
