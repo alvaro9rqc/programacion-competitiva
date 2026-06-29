@@ -5,8 +5,8 @@
 _El código se escribe en la mente y en el papel antes de tocar el teclado._
 
 - **Simulación Real:** Trainea siempre con tiempos y cronómetro (en el celular,
-no en la PC). Si no lo logras en el tiempo, pierdes. Así se maneja el estrés:
-exponiéndote a él.
+  no en la PC). Si no lo logras en el tiempo, pierdes. Así se maneja el estrés:
+  exponiéndote a él.
 
 - **El Poder del Papel:** No uses el papel solo para conclusiones; úsalo para
   trazar rutas de ideas y evitar dar vueltas en círculos. Anota corolarios,
@@ -39,13 +39,13 @@ exponiéndote a él.
 _Antes de enviar, revisa esta lista._
 
 - **Lectura y Límites:** Revisa siempre los parámetros (ej. usar `1e10` cuando era `1e18`). Analiza con lupa los límites abiertos y cerrados, especialmente en geometría o rangos. ¡Y lee bien las variables del input (no confundas N con M)!
-- **Tipos de Datos y Precisión:** _ Los errores de precisión en `double` son letales (el error se calcula como error * número de operaciones).
+- **Tipos de Datos y Precisión:** \_ Los errores de precisión en `double` son letales (el error se calcula como error \* número de operaciones).
 - Las raíces cuadradas y los negativos diminutos generan `NaN`. Usa `(unsigned long long) sqrt((long double) k)` o `sqrtl(n)`.
 - Si tienes que calcular más que distancias enteras, usa estructuras `Point` y `long double`.
 - **Ordenamiento (Sort):** El comparador de `sort` exige un "estrictamente menor". NUNCA uses `<=`, `>=`, o `==`. La transitividad estricta es obligatoria (`cmp(x,x)` debe dar `false`).
 - **Grafos:** En Floyd-Warshall, el nodo intermedio (puente) debe ir en el bucle superior. En Bellman-Ford, ten cuidado con el infinito (`inf`); la relajación en ciclos negativos puede excederlo si no usas algo mayor que `longmax * n`.
-- **Depuración (Debugging):** 
-    - Si sabes que el algoritmo base está bien pero te da RE, prueba con instancias grandes en local. Usa `asserts` para validar estados imposibles en el código que "casi nunca modificas". Si haces un cambio que lógicamente no altera el resultado, cámbialo igual para probar.
+- **Depuración (Debugging):**
+  - Si sabes que el algoritmo base está bien pero te da RE, prueba con instancias grandes en local. Usa `asserts` para validar estados imposibles en el código que "casi nunca modificas". Si haces un cambio que lógicamente no altera el resultado, cámbialo igual para probar.
 
 ## III. PARADIGMAS Y TÉCNICAS (Approaches & Techniques)
 
@@ -54,7 +54,7 @@ _Cómo atacar el problema cuando no sabes por dónde empezar._
 ### Búsqueda y Optimización (BS, Two Pointers, Sliding Window)
 
 - **Sliding Window:** Implica recalcular resultados en un rango con updates `O(1)`. No siempre se desplazan dos índices; a veces (como en anillos) precalculas y actualizas desplazando solo uno.
-    - digamos, un problema de rangos, que se irán desplazando, te exige alguna igualdad, digamos que el rango de a y b sea igual, entonces, debes de hacer saltar esa restricción en pasos de tamaño k, que es equivalente a agrupar los índices en módulo k. *Tienes que formular una ecuación de transición*
+  - digamos, un problema de rangos, que se irán desplazando, te exige alguna igualdad, digamos que el rango de a y b sea igual, entonces, debes de hacer saltar esa restricción en pasos de tamaño k, que es equivalente a agrupar los índices en módulo k. _Tienes que formular una ecuación de transición_
 
 - **Binary Search (BS):** Si necesitas contar pares o rangos que se intersectan y sientes que es `O(N^2)`, ordenar y usar BS (o `lower_bound`) baja la complejidad para contar rápido.
 - **K-ésimo elemento:** Cuando te pidan "halla el k-ésimo elemento tal que...", evalúa si existe una función monótona para usar Binary Search.
@@ -63,50 +63,51 @@ _Cómo atacar el problema cuando no sabes por dónde empezar._
 
 ### Rangos, Existencia y Greedy
 
-- **Problemas de Rangos:** 
+- **Problemas de Rangos:**
 
-    - Definir un extremo estático (un `i` fijo) y buscar cómo calcular el `j` de
-      forma rápida suele ser la clave. Observa siempre qué pasa si el rango es de
-      tamaño 1 para entender el peor escenario de eliminación o alteración.
+  - Definir un extremo estático (un `i` fijo) y buscar cómo calcular el `j` de
+    forma rápida suele ser la clave. Observa siempre qué pasa si el rango es de
+    tamaño 1 para entender el peor escenario de eliminación o alteración.
 
-    - Caso mínimo: Si el problema te pide que algo se cumpla para todos los
-      rangos, mira para los rangos de tamaño 2 y 3. Porque esos se podría propagar
+  - Caso mínimo: Si el problema te pide que algo se cumpla para todos los
+    rangos, mira para los rangos de tamaño 2 y 3. Porque esos se podría propagar
 
-    - invariante: si te dan la opción de hacer una operación que afecta un
-      rango, a veces el resultado no depende de un `l` o `r` escogido, sino solo
-      de cada `a_i`
+  - invariante: si te dan la opción de hacer una operación que afecta un
+    rango, a veces el resultado no depende de un `l` o `r` escogido, sino solo
+    de cada `a_i`
 
-- **Existencia:** 
-    - Si te piden un número mayor a cero que no comparta bits con otro, las
-      potencias de 2 () son tu salvación. Modelar matemáticamente la condición de
-      existencia es el primer paso antes de codear.
+- **Existencia:**
+  - Si te piden un número mayor a cero que no comparta bits con otro, las
+    potencias de 2 () son tu salvación. Modelar matemáticamente la condición de
+    existencia es el primer paso antes de codear.
 
-    - Si tienes varios casos, como que en un rango se ocupa tales elementos,
-      trata de modelar en ecuaciones y le sacas módulo o truquito, a veces funciona.
+  - Si tienes varios casos, como que en un rango se ocupa tales elementos,
+    trata de modelar en ecuaciones y le sacas módulo o truquito, a veces funciona.
 
 - **Greedy Incremental:** Ordenar los elementos e iterar uno por uno validando
   la propiedad greedy (desde el más pequeño al más grande) o usar una acumulación
   de elementos para acercarse al óptimo.
 
 ### Operaciones e invariantes
+
 - **Invariantes**: Ante problemas que piden hacer una operación cero o más veces, podrías pensar que tus estados dependen de varias variables, pero a veces puede que no, y solo sean pocos los que te interesen, y luego, necesites encontrar una forma de saltar lo que no te interesan
 
 ### Algoritmos Constructivos y Reducción (Constructives)
 
 - Si te piden construir algo, digamos bajo una regla tal y condición tal, entonces:
-    - Analiza como el valor puede variar según el tamaño de la secuencia, a lo mejor puedes usar eso a tu favor.
-    - Evalua qué es necesario que se cumpla en cada transición
-        - Para eso puedes evaluar la unidad o el par.
+  - Analiza como el valor puede variar según el tamaño de la secuencia, a lo mejor puedes usar eso a tu favor.
+  - Evalua qué es necesario que se cumpla en cada transición
+    - Para eso puedes evaluar la unidad o el par.
 
 ### Números Gigantes y Cadenas de Dígitos (String Math)
 
-- Cuando el número es tan grande que te lo dan como un string de longitud `1e5` o `1e6`.*
-    - **El Colapso de la Suma (The Sum Collapse):** Un número de `1e5` dígitos es inmanejable matemáticamente, pero la suma de sus dígitos es diminuta (en el peor caso, puros nueves: `1e5 * 9 = 900,000`). Usa esta operación para colapsar la complejidad de `O(10^N)` a un rango donde puedas iterar con un simple `for`.
-    - **Frecuencias sobre Permutaciones:** Si el problema te permite reordenar los dígitos, borrar caracteres, o la respuesta es independiente del orden, **destruye el string inmediatamente**. Conviértelo en un arreglo de frecuencias `vector<int> frec(10, 0)`. Pasas de procesar una cadena de tamaño `N` a manejar un arreglo constante de tamaño 10.
-    - **Las Invariantes del 9 y el 3:** Reordenar los caracteres de un string gigante cambia su valor, pero **nunca** cambia la suma total de sus dígitos.
-    - **Reglas de Construcción Greedy:** Si te piden armar el número más grande o más pequeño posible con los dígitos dados:
-        - *Máximo:* Ordena descendente (el mayor dígito posible siempre debe ir primero).
-    - *Mínimo:* Ordena ascendente, pero cuidado con el **Cero a la Izquierda**. Busca el primer dígito mayor a 0, colócalo en la posición más significativa, y luego pon todos los ceros inmediatamente después.
+- Cuando el número es tan grande que te lo dan como un string de longitud `1e5` o `1e6`.\*
+  - **El Colapso de la Suma (The Sum Collapse):** Un número de `1e5` dígitos es inmanejable matemáticamente, pero la suma de sus dígitos es diminuta (en el peor caso, puros nueves: `1e5 * 9 = 900,000`). Usa esta operación para colapsar la complejidad de `O(10^N)` a un rango donde puedas iterar con un simple `for`.
+  - **Frecuencias sobre Permutaciones:** Si el problema te permite reordenar los dígitos, borrar caracteres, o la respuesta es independiente del orden, **destruye el string inmediatamente**. Conviértelo en un arreglo de frecuencias `vector<int> frec(10, 0)`. Pasas de procesar una cadena de tamaño `N` a manejar un arreglo constante de tamaño 10.
+  - **Las Invariantes del 9 y el 3:** Reordenar los caracteres de un string gigante cambia su valor, pero **nunca** cambia la suma total de sus dígitos.
+  - **Reglas de Construcción Greedy:** Si te piden armar el número más grande o más pequeño posible con los dígitos dados:
+    - _Máximo:_ Ordena descendente (el mayor dígito posible siempre debe ir primero).
+  - _Mínimo:_ Ordena ascendente, pero cuidado con el **Cero a la Izquierda**. Busca el primer dígito mayor a 0, colócalo en la posición más significativa, y luego pon todos los ceros inmediatamente después.
 
 ## IV. ALGORITMOS Y ESTRUCTURAS (Core Knowledge)
 
@@ -119,7 +120,7 @@ _Tu armería técnica._
 - **Permutaciones:** Imagínalas como líneas que suben y bajan. Quitar un elemento a una permutación te da otra, y reconstruirla toma `O(N)`.
 - **DP con Bitmask:** Si buscas emparejar, no calcules los estados `O(N^2)` cruzando todos contra todos. Fija el óptimo del primer elemento disponible (`LSOne`) contra los demás; eso te lleva al mismo estado final.
 - **Compresión y Conteo:** Para sumar combinaciones, la sumatoria suele ser "las maneras que hay de llegar al siguiente si realizo este evento". Si te piden cuántos subconjuntos cumplen algo (no solo el max/min), usa ideas de la mochila y compáralo dinámicamente con una constante global.
-- **Juegos de fases vs. dp interactivo**: ten mucho cuidado con las desiciones estáticas, porque me pasó una vez que un jugador hacía algo y el otro tenía que reaccionar, pero justo esa desición era fija, o sea no podía alternar en fases y yo me equivoqué. 
+- **Juegos de fases vs. dp interactivo**: ten mucho cuidado con las desiciones estáticas, porque me pasó una vez que un jugador hacía algo y el otro tenía que reaccionar, pero justo esa desición era fija, o sea no podía alternar en fases y yo me equivoqué.
 
 ### 2. Estructuras de Datos Avanzadas
 
@@ -146,7 +147,6 @@ _Tu armería técnica._
 - **Pruebas de Escritorio Extremas (Edge Cases manuales):** Antes de buscar errores en tu lógica principal, evalúa a mano los casos más estúpidamente simples (ej. puros ceros, puros unos). Lee las restricciones del problema palabra por palabra mientras haces el caso a mano; el error suele ser una condición que olvidaste aplicar al caso base.
 - **Debugging Aislado (Divide y Vencerás):** No leas todo el código de golpe para encontrar un error. Genera un caso de prueba que fuerce la ejecución exclusiva del bloque `if` y otro exclusivo para el `else`. Aisla qué rama está fallando antes de intentar arreglarla.
 
-
 ## V. TRUCOS DE LENGUAJE Y LIBRERÍAS (Language Arsenal)
 
 - **C++:** \* `max_element(a.begin(), a.end())` devuelve un puntero al mayor. Útil y rápido.
@@ -169,10 +169,8 @@ Tener este Grimoire ordenado es solo el primer paso. Para mantener la disciplina
 
 ¿Te gustaría que tomemos alguna de estas secciones, por ejemplo la de **Programación Dinámica** o **Binary Search**, y la expandamos con un formato de "checklist de ataque" que puedas leer en los primeros 5 minutos de un contest para estructurar tu mente?
 
-
 ¡Excelente iniciativa! Un buen "Grimorio" de programación competitiva es un documento vivo. Cada vez que un problema te vuela la cabeza o te hace tropezar, debe convertirse en una nueva regla para que tu "yo del futuro" no caiga en la misma trampa.
 
-Basado en este problema y en los patrones clásicos de AtCoder y Codeforces para tratar con "números artificialmente grandes", he redactado esta nueva subsección manteniendo exactamente el formato, tono y estilo de tu guía. 
+Basado en este problema y en los patrones clásicos de AtCoder y Codeforces para tratar con "números artificialmente grandes", he redactado esta nueva subsección manteniendo exactamente el formato, tono y estilo de tu guía.
 
 Puedes copiarla y pegarla directamente en tu sección **IV. ALGORITMOS Y ESTRUCTURAS** o en la **III. PARADIGMAS Y TÉCNICAS**:
-
