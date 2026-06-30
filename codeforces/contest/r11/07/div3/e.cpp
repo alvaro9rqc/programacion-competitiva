@@ -42,23 +42,24 @@ ll dfs(ll u, ll p) {
   }
   if(!sq[u]) return ans;
   //co
-  dbg(u);
-  dbg(ans);
-  dbg(nod[u]);
-  for(auto& i: t) cout<<i<<' ';
-  cout<<'\n';
+  // dbg(u);
+  // dbg(ans);
+  // dbg(nod[u]);
+  // for(auto& i: t) cout<<i<<' ';
+  // cout<<'\n';
   //co
   ll ac = t[0];
+  t[0]=0;
   vl t2=t;
   for (auto i = 1; i < sz(t); i++) {
     auto xd = ac;
     ans+=ac*t[i],ac+=t[i];
     t[i]=xd*t[i]+t[i-1];
   }
-  dbg(ans);
+  // dbg(ans);
   for (auto i = 2; i < sz(t2); i++) 
     ans+=t2[i]*t[i-1];
-  dbg(ans);
+  // dbg(ans);
   return ans;
 }
 
@@ -83,8 +84,8 @@ void solve() {
     if(nod[i]==1){root=i;break;}
   fill(all(nod),0);
   son(root,root);
-  dbg(root);
-  dbg(nod[root]);
+  // dbg(root);
+  // dbg(nod[root]);
   // ans
   ll ans = dfs(root,root);
   cout<<ans<<'\n';
