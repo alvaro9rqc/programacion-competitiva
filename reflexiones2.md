@@ -164,6 +164,11 @@ _Tu armería técnica._
   hallar en qué nodo terminas tras `N` pasos en tiempo `O(log N)` para cualquier
   nodo.
 
+#### Árboles
+
+- Topología de estrella: un árbol tiene un padre y k hijos, usa eso como
+  estrategia para updates y conteo inteligente.
+
 ### 4. Matemáticas, Combinatoria y Bitwise
 
 - **Combinatoria:** El orden de los objetos siempre importa, a menos que el problema indique explícitamente lo contrario.
