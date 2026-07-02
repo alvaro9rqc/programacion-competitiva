@@ -149,10 +149,20 @@ _Tu armería técnica._
 
 ### 3. Grafos y Flujos
 
-- **Visión de Aristas:** Cambia el chip: en lugar de nodos, piensa en aristas. Si quieres visitar un nodo en un DFS/BFS, comprueba si la _arista_ está disponible y es válida, no solo si el nodo está sin visitar.
-- **Grafos Clásicos:** Recuerda optimizar Prim con un vector de distancias. Valida siempre primero si el grafo de entrada es conexo o es un árbol.
-- **Flujo Máximo:** Ten cuidado con los ciclos. Considera usar un `set` de aristas visitadas en lugar de vértices visitados para rastrear rutas. El flujo te responde a la pregunta de "¿cuánto puedes mandar de manera óptima?".
-- **Binary Lifting:** Úsalo cuando te pregunten "cuenta el número de..." o para hallar en qué nodo terminas tras `N` pasos en tiempo `O(log N)` para cualquier nodo.
+- **Visión de Aristas:** Cambia el chip: en lugar de nodos, piensa en aristas.
+  Si quieres visitar un nodo en un DFS/BFS, comprueba si la _arista_ está
+  disponible y es válida, no solo si el nodo está sin visitar.
+
+- **Grafos Clásicos:** Recuerda optimizar Prim con un vector de distancias.
+  Valida siempre primero si el grafo de entrada es conexo o es un árbol.
+
+- **Flujo Máximo:** Ten cuidado con los ciclos. Considera usar un `set` de
+  aristas visitadas en lugar de vértices visitados para rastrear rutas. El flujo
+  te responde a la pregunta de "¿cuánto puedes mandar de manera óptima?".
+
+- **Binary Lifting:** Úsalo cuando te pregunten "cuenta el número de..." o para
+  hallar en qué nodo terminas tras `N` pasos en tiempo `O(log N)` para cualquier
+  nodo.
 
 ### 4. Matemáticas, Combinatoria y Bitwise
 
