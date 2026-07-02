@@ -131,9 +131,21 @@ _Tu armería técnica._
 
 ### 2. Estructuras de Datos Avanzadas
 
-- **Segment Tree / Fenwick:** Si el DP tiene actualizaciones (updates) constantes sobre la marcha, necesitas un Segment Tree para guardar la información del DP. Recuerda que para que soporte información de rango, debes usar sus atributos de `lo` y `hi`.
-- **Data Compression:** Comprime coordenadas si buscas alturas menores en arreglos gigantes. Ordenas, haces `lower_bound` y usas un Fenwick Max Tree o Segment Tree para actualizar el menor en ese rango.
-- **Agrupación dispersa + búsqueda binaria**: En el problema _Red Light, Green Light (Hard version)_ te pedia hallar si a partir de un val_i había un val_j (con j>i) tal que sus valores fueran iguales, entonces, lo que se hizo fue agrudar los valores en un mapa de vectores, y en los vectores las posiciones donde aparecen, y para encontrar el elemento, solo bastaba con un 2 binary search.
+- **Segment Tree / Fenwick:** Si el DP tiene actualizaciones (updates)
+  constantes sobre la marcha, necesitas un Segment Tree para guardar la
+  información del DP. Recuerda que para que soporte información de rango, debes
+  usar sus atributos de `lo` y `hi`.
+
+- **Data Compression:** Comprime coordenadas si buscas alturas menores en
+  arreglos gigantes. Ordenas, haces `lower_bound` y usas un Fenwick Max Tree o
+  Segment Tree para actualizar el menor en ese rango.
+
+- **Agrupación dispersa + búsqueda binaria**: En el problema _Red Light, Green
+  Light (Hard version)_ te pedia hallar si a partir de un val_i había un val_j
+  (con j>i) tal que sus valores fueran iguales, entonces, lo que se hizo fue
+  agrudar los valores en un mapa de vectores, y en los vectores las posiciones
+  donde aparecen, y para encontrar el elemento, solo bastaba con un 2 binary
+  search.
 
 ### 3. Grafos y Flujos
 
