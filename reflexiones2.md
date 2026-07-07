@@ -116,6 +116,11 @@ _Cómo atacar el problema cuando no sabes por dónde empezar._
     - _Máximo:_ Ordena descendente (el mayor dígito posible siempre debe ir primero).
   - _Mínimo:_ Ordena ascendente, pero cuidado con el **Cero a la Izquierda**. Busca el primer dígito mayor a 0, colócalo en la posición más significativa, y luego pon todos los ceros inmediatamente después.
 
+#### Bitwise
+
+- Casi todos se resuelven con el bit más grande o con la longitud de la cadena
+  (caso = o != len)
+
 ## IV. ALGORITMOS Y ESTRUCTURAS (Core Knowledge)
 
 _Tu armería técnica._
