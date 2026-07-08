@@ -1,3 +1,8 @@
+# Graphs
+## Trees
+- juegos/batallas en árboles
+  - rootear.
+  - si no puedes usar adyacentes, entonces habrá long (n) alternativas.
 # STD
 
 - sqrt con round funciona bien hasta $10^6$
