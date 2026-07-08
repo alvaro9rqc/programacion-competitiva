@@ -10,51 +10,43 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-vector<vl>memo;
-vl val;
-vector<vi> adj1,adj;
-
-ll dp(bool t, int i) {
-  if(memo[t][i]!=-1)return memo[t][i];
-  auto& ans=memo[t][i];
-  if(t){
-    ans=val[i];
-    for(auto& v: adj[i]) ans+=dp(0,v);
-  } else {
-    ans=0;
-    for(auto& v: adj[i]) ans+=max(dp(1,v), dp(0,v));
-  }
-  return ans;
-}
-
-void dfs(int u, int p) {
-  for(auto& v: adj1[u]) {
-    if(v==p) continue;
-    adj[u].emplace_back(v);
-    dfs(v,u);
-  }
-}
-
 void solve() {
   int n;cin>>n;
-  val.resize(n);
-  memo.assign(
-    2, vl(n,-1)
-  );
-  adj1.assign(n,vi());
-  adj.assign(n,vi());
-  ll s=0;
-  for(auto& i: val) cin >> i,s+=i; 
+  vl val(n); for(auto& i: val) cin >> i;  
+  vector<vi> adj(n);
   for (auto i = 0; i < n-1; i++) {
-    int u,v;cin>>u>>v;
+    int u, v;cin>>u>>v;
     --u,--v;
-    adj1[u].emplace_back(v);
-    adj1[v].emplace_back(u);
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
   }
-  dfs(0,0);
-  cout<<s*2-max(dp(0,0),dp(1,0))<<'\n';
-  // for(auto& v: adj[0]) cout<<v<<"\n";
-  // raya;
+  int lo = int(log2(n)+3);
+  ll inf = 1e18;
+  vector<vl> dp(n,
+                vl(lo,inf));
+  ll ans = inf;
+  auto dfs = [&](auto&& self, int u, int p) ->void {
+    auto& d = dp[u];
+    //always
+    for (auto l = 0; l < lo; l++) 
+      d[l]=(l+1)*val[u];
+    //chil
+    for(auto& v: adj[u]) {
+      if(v==p)continue;
+      self(self,v,u);
+      for (auto l = 0; l < lo; l++) 
+        d[l]+=dp[v][l];
+    }
+    //ans
+    if(u==0) for(auto& i: d) ans=min(ans,i);
+    //ever
+    vl su(lo,inf),pr(lo,inf);
+    for (auto l = 1; l < lo; l++) pr[l]=min(pr[l-1],d[l-1]);
+    for (auto l = lo-2; l >= 0; l--) su[l]=min(su[l+1],d[l+1]);
+    for (auto l = 0; l < lo; l++) d[l]=min(pr[l],su[l]);
+  };
+  dfs(dfs,0,0);
+  cout<<ans<<'\n';
 }
 
 int main() {
