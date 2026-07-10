@@ -91,9 +91,15 @@ _Cómo atacar el problema cuando no sabes por dónde empezar._
   - Si tienes varios casos, como que en un rango se ocupa tales elementos,
     trata de modelar en ecuaciones y le sacas módulo o truquito, a veces funciona.
 
+#### Greedy
+
 - **Greedy Incremental:** Ordenar los elementos e iterar uno por uno validando
   la propiedad greedy (desde el más pequeño al más grande) o usar una acumulación
   de elementos para acercarse al óptimo.
+- sweep with lazy deletion by threshold:
+  - ordena tus elementos
+  - añade progresivamente y guarda en otra lista cuando eliminarás otros. 
+  - y después del paso limpias los elementos que guardaste como para eliminar. 
 
 ### Operaciones e invariantes
 
