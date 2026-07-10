@@ -23,3 +23,7 @@
   - número de caminos de long k que pasan por un nodo
   - Encontrar el nodo que minimiza la suma de distancias a otros 3 nodos.
   - Juegos de persecución en árboles (Alice y Bob en grafos).
+# Divide y vencerás
+## Merge sort
+- número de inversionse
+- segmentos tal que sum(l,r) sea > x
