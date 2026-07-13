@@ -1,8 +1,11 @@
 # Graphs
+
 ## Trees
+
 - juegos/batallas en árboles
   - rootear.
   - si no puedes usar adyacentes, entonces habrá long (n) alternativas.
+
 # STD
 
 - sqrt con round funciona bien hasta $10^6$
@@ -23,16 +26,21 @@
   - número de caminos de long k que pasan por un nodo
   - Encontrar el nodo que minimiza la suma de distancias a otros 3 nodos.
   - Juegos de persecución en árboles (Alice y Bob en grafos).
+
 # Divide y vencerás
+
 ## Merge sort
+
 - número de inversionse
 - segmentos tal que sum(l,r) sea > x
 
 # Greedy
 
 ## Mediana
+
 - Para maximizar la mediana, es acumulativo
 
 # Técnicas
+
 - Si necesitas nivelar `x` elementos para que todos sean igual a `y`, te basta:
-  `y`*`total elementos` - `suma acumulada`
+  `y`\*`total elementos` - `suma acumulada`
