@@ -48,8 +48,6 @@ void solve() {
   // } else if (!he) {
   //   cm0=1;cm1=0;
   // }
-  dbg(cm0);
-  dbg(cm1);
   ll t0=1;
   ll t1=0;
   for (auto i = sz(val)-1; i >= 0; i--) {
@@ -60,18 +58,16 @@ void solve() {
     //   t1%=mod;
     // }
     if(i and val[i-1]+1==val[i]) {
-      ll x = cnt[i-1]*cnt[i]%mod * fc(cnt[i-1]-1)*fc(cnt[i]-1)%mod;
-      // dbg(x);dbg(i);
-      t1+=x;
-      t1%=mod;
+      ++t1;
     }
     if(cnt[i]>1) {
       t0= (fe(cnt[i]-1)*(t0))%mod;
     }
   }
-  dbg(t0);
-  dbg(t1);
-  cout<<(t0*cm0%mod+t1*cm1%mod*t0%mod)%mod<<'\n';
+  ll ans = t0*cm0%mod;
+  ans += cm1*t1%mod*t0%mod;
+  ans %=mod;
+  cout<<(ans)<<'\n';
 }
 
 int main() {
