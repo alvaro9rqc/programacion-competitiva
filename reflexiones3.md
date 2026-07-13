@@ -44,3 +44,12 @@
 
 - Si necesitas nivelar `x` elementos para que todos sean igual a `y`, te basta:
   `y`\*`total elementos` - `suma acumulada`
+
+# Contest
+
+- Me quedé estancado en el problema [C](https://codeforces.com/contest/2246/problem/C)  durante el contest
+  lo que debí de haber hecho era hacer lo que hago siempre en las prácticas,
+  separme un rato, evaluar de cambiar estrategia, escribir las conclusiones hasta
+  ahora, solo avanzaba sin parar, pero era un acto de desesperación. Que el
+  contest sea una práctica más
+
