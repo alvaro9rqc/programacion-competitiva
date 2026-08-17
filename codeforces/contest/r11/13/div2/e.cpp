@@ -24,7 +24,7 @@ void solve() {
   //   cout<<k<<' '<<v<<'\n';
   // }
   // cout<<'\n';
-  auto pts= [&](ll v) {
+  auto pts = [&](ll v) {
     ll r = v / n;
     v%=n;
     auto it = omp.upper_bound(v);
@@ -32,18 +32,13 @@ void solve() {
     return ans + v*d + r*((--omp.end())->second + n*d);
   };
   bool can = 0;
-  for (auto i = 0; i < m and not can; i++) {
-    ll ini = prr[i];
-    ll xd = pts(ini-1);
-    // dbg(ini);
-    for(auto& [k,v]: omp) {
-      // dbg(k);
-      // dbg(pts(k+ini));
-      dbg(v + xd + k*d);
-      can = (v + xd + k*d > pts(k+ini));
+  for(auto& k1: prr) {
+    if(can)break;
+    ll a = pts(k1);
+    for(auto& k2: prr) {
+      can = (a + pts(k2) > pts(k1+1+k2));
       if(can)break;
     }
-    raya;
   }
   cout<<(can?"yes":"no")<<'\n';
 }
