@@ -337,3 +337,166 @@ struct MergeTree {
     return qry(1, 0, n-1, l, r, x);
   }
 };
+
+// ####################
+// ####################
+// ####################
+// ####################
+// Matrix.h
+// ####################
+// ####################
+// ####################
+// ####################
+
+template<class T, int N> struct Matrix {
+  typedef Matrix M;
+  array<array<T, N>, N> d{};
+  M operator*(const M& m) const {
+    M a;
+    rep(i,0,N) rep(j,0,N)
+    rep(k,0,N) a.d[i][j] += d[i][k]*m.d[k][j];
+    return a;
+  }
+  array<T, N> operator*(const array<T, N>& vec) const {
+    array<T, N> ret{};
+    rep(i,0,N) rep(j,0,N) ret[i] += d[i][j] * vec[j];
+    return ret;
+  }
+  M operator^(ll p) const {
+    assert(p >= 0);
+    M a, b(*this);
+    rep(i,0,N) a.d[i][i] = 1;
+    while (p) {
+      if (p&1) a = a*b;
+      b = b*b;
+      p >>= 1;
+    }
+    return a;
+  }
+};
+
+// ####################
+// ####################
+// ####################
+// ####################
+// my Matrix.h
+// ####################
+// ####################
+// ####################
+// ####################
+
+template<class T> struct Matrix {
+  typedef Matrix M;
+  vector<T> d;
+  ll N;
+  Matrix(ll n) : N(n), d(n * n, 0) {}
+  inline T& at(ll i, ll j) { return d[i * N + j]; }
+  inline const T& at(ll i, ll j) const { return d[i * N + j]; }
+  M operator*(const M& m) const {
+    M a(N);
+    rep(i, 0, N) rep(k, 0, N) {
+      if (!at(i, k)) continue; 
+      T val = at(i, k);
+      rep(j, 0, N) {
+        a.at(i, j) += val * m.at(k, j);
+        a.at(i, j) %= mod; 
+      }
+    }
+    return a;
+  }
+  vector<T> operator*(const vector<T>& vec) const {
+    vector<T> ret(N, 0);
+    rep(i, 0, N) rep(j, 0, N) {
+      ret[i] += at(i, j) * vec[j];
+      ret[i] %= mod;
+    }
+    return ret;
+  }
+  M operator^(ll p) const {
+    assert(p >= 0);
+    M a(N), b(*this);
+    rep(i, 0, N) a.at(i, i) = 1; // Identidad
+    while (p) {
+      if (p & 1) a = a * b;
+      b = b * b;
+      p >>= 1;
+    }
+    return a;
+  }
+};
+
+
+
+// ####################
+// ####################
+// ####################
+// ####################
+// Segment Tree
+// ####################
+// ####################
+// ####################
+// ####################
+
+struct Tree {
+  typedef int T;
+  static constexpr T unit = INT_MIN;
+  T f(T a, T b) { return max(a, b); } // (any associative fn)
+  vector<T> s; int n;
+  Tree(int n = 0, T def = unit) : s(2*n, def), n(n) {}
+  void update(int pos, T val) {
+    for (s[pos += n] = val; pos /= 2;)
+      s[pos] = f(s[pos * 2], s[pos * 2 + 1]);
+  }
+  T query(int b, int e) { // query [b , e)
+    T ra = unit, rb = unit;
+    for (b += n, e += n; b < e; b /= 2, e /= 2) {
+      if (b % 2) ra = f(ra, s[b++]);
+      if (e % 2) rb = f(s[--e], rb);
+    }
+    return f(ra, rb);
+  }
+};
+//
+// ####################
+// ####################
+// ####################
+// ####################
+// Persistent Segment Tree
+// ####################
+// ####################
+// ####################
+// ####################
+
+struct Node {
+  typedef int T;
+  static constexpr T unit = INT_MIN;
+  static T f(T a, T b) { return max(a, b); }
+  Node *l = 0, *r = 0;
+  int lo, hi;
+  T val = unit;
+  Node(int _lo, int _hi, T _val = unit) : lo(_lo), hi(_hi), val(_val) {}
+  Node(Node* _l, Node* _r) : l(_l), r(_r), lo(_l->lo), hi(_r->hi) {
+    val = f(l->val, r->val);
+  }
+  Node(const vector<T>& v, int _lo, int _hi) : lo(_lo), hi(_hi) {
+    if (lo + 1 < hi) {
+      int mid = lo + (hi - lo) / 2;
+      l = new Node(v, lo, mid);
+      r = new Node(v, mid, hi);
+      val = f(l->val, r->val);
+    } else {
+      val = v[lo];
+    }
+  }
+  T query(int L, int R) {
+    if (R <= lo || hi <= L) return unit;
+    if (L <= lo && hi <= R) return val;
+    return f(l->query(L, R), r->query(L, R));
+  }
+  Node* update(int pos, T x) {
+    if (lo + 1 == hi) return new Node(lo, hi, x);
+    int mid = lo + (hi - lo) / 2;
+    if (pos < mid) return new Node(l->update(pos, x), r);
+    else return new Node(l, r->update(pos, x));
+  }
+};
