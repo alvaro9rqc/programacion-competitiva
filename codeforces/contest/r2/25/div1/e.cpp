@@ -17,14 +17,21 @@ void solve() {
     string s;cin>>s;
     int m = 0;
     for(auto& c: s) m|=(1<<(c-'a'));
-    arr[m]+=1;
+    for (auto x = m; x > 0 ; x=(x-1)&m) 
+      arr[x]+=1;
   }
+  dbg(arr[0b11]);
   for (auto i = 0; i < 24; i++) {
     for (auto j = 0; j < (1<<24); j++) {
-      if(j&(1<<i)) arr[j]+=arr[j^(1<<i)];
+      if(j&(1<<i)) {
+        arr[j]+=arr[j^(1<<i)] - (1<<(__builtin_popcount(
+          ((1<<i)-1)&j
+        )))+1;
+      }
     }
   }
-  dbg(arr[0b111]);
+  dbg(arr[0b11]);
+  // int x= __builtin_popcount(3);
   cout<<arr[(1<<24)-1]<<'\n';
 }
 
