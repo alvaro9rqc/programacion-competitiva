@@ -19,18 +19,19 @@ void solve() {
     for(auto& c: s) m|=(1<<(c-'a'));
     arr[m]+=1;
   }
-
   for (auto i = 0; i < 24; i++) {
     for (auto j = 0; j < (1<<24); j++) {
       if(j&(1<<i)) {
         arr[j]+=arr[j^(1<<i)];
       }
-
-      // if(j&(1<<i)) arr[j]+=arr[j^(1<<i)]-;
     }
   }
-  dbg(arr[0b111]);
-  cout<<arr[(1<<24)-1]<<'\n';
+  int ans = 0;
+  for (auto i = 0; i < 1<<24; i++) {
+    int x=n-arr[((1<<24)-1) - i];
+    ans^=x*x;
+  }
+  cout<<ans<<'\n';
 }
 
 int main() {
