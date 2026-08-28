@@ -60,8 +60,7 @@ void solve() {
       auto [p0,pts0]=f(x);
       auto [p1,pts1]=f(x1);
       s+=pts1-pts0;
-      if(i+1==sz(val[d]))
-        ans = min(ans,c+s-n*(d+1)+d+1);
+      val[p1].emplace_back(x1);
     }
   }
   cout<<ans<<'\n';
