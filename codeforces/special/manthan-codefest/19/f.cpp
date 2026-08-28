@@ -37,17 +37,16 @@ void solve() {
   int ans = 0;
   for (auto z = 0; z < n; z++) {
     int m = 0;
-    int xd = -1;
     int x = arr[z];
     for (auto i = blim-1; i >= 0; i--) {
       if(~x&1<<i) {
         int m1 = m|1<<i;
         auto [k,j]=dp[m1];
-        if(j>z) m = m1, xd=j;
+        if(j>z) m = m1;
       }
     }
-    if(xd!=-1)
-      ans=max(arr[xd]|x, ans);
+    if(dp[m][1]>z)
+      ans=max(m|x, ans);
   }
   cout<<ans<<'\n';
 }
