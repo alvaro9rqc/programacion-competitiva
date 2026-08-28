@@ -10,56 +10,35 @@ using vl = vector<ll>;
 #define sz(x) (int)(x).size()
 #define all(x) begin(x), end(x)
 
-ll mod = 1e9+7;
-vl fac;
-
-ll fe(ll b, ll e) {
-  ll r = 1;
-  while(e) {
-    if(e&1) r=r*b%mod;
-    e>>=1;
-    b=b*b%mod;
-  }
-  return r;
-}
-
-ll com(ll n, ll r) {
-  return fac[n]*fe(fac[r]*fac[n-r]%mod,
-                   mod-2
-                   )%mod;
-}
-
-ll way(ll r) {
-  ll ans = 0;
-  for (auto i = 0ll; i < r+1; i++) {
-    // dbg(fac[i]*com(r,i));
-    ans+=fac[i]*com(r,i);
-    ans%=mod;
-  }
-  return ans;
-}
-
 void solve() {
-  ll n,m;cin>>n>>m;
-  ll lim = 1<<m;
-  fac.assign(n+1,0);
+  int n,m;cin>>n>>m;
+  vl arr(n);
   for (auto i = 0; i < m; i++) {
     string s;cin>>s;
     for (auto j = 0; j < n; j++) 
-      if(s[j]=='H') fac[j]|=1<<i;
+      arr[j]|=(s[j]=='H')<<i;
   }
-  map<ll,int> omp;
-  vl dp(lim,1);
-  for (auto i = 0; i < n; i++) ++omp[fac[i]];
-  fac[0]=fac[1]=1;
-  for (auto i = 2; i < n+1; i++) 
-    fac[i]=i*fac[i-1]%mod;
-  for(auto& [k,v]: omp) dp[k]=way(v);
-  for (auto i = 0; i < m; i++) 
-    for (auto j = 0; j < lim; j++) 
-      if(j&(1<<i)) dp[j]=dp[j]*dp[j^(1<<i)]%mod;
-  cout<<( dp[lim-1]-1+mod ) % mod<<'\n';
-  dbg(way(3));
+  ll lim = 1<<m;
+  vl omp(lim);
+  for(auto& i: arr) ++omp[i];
+  vl com(n+1);
+  com[0]=0;
+  ll mod = 1e9+7;
+  for (auto i = 1ll; i < n+1; i++) 
+    com[i]=i*(com[i-1]+1)%mod;
+  vector<vl> dp(lim, vl(m+1));
+  ll ans = 0;
+  for (auto j = 0; j < lim; j++) {
+    ll sa = 1;
+    for (auto i = 0; i < m; i++) 
+      if(j&1<<i) sa=(sa+dp[j^1<<i][i+1])%mod;
+    ans = (ans+(dp[j][0] = com[omp[j]]*sa%mod))%mod;
+    for (auto i = 0; i < m; i++) {
+      dp[j][i+1]=dp[j][i];
+      if(j&1<<i)dp[j][i+1]=(dp[j][i+1]+dp[j^1<<i][i])%mod;
+    }
+  }
+  cout<<ans<<'\n';
 }
 
 int main() {
@@ -71,4 +50,5 @@ int main() {
     solve();
   }
 }
+
 
