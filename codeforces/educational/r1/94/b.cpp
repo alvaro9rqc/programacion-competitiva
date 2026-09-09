@@ -11,15 +11,16 @@ using vl = vector<ll>;
 #define all(x) begin(x), end(x)
 
 void solve() {
-  ll x, y;cin>>x>>y;
-  ll op=0;
-  for (auto i = 31; i >= 0; i--) {
-    ll m=1ll<<i;
-    if((x^y)&m) continue;
-    ll r = m - ( (m-1)&y);
-    if(r<=x and ((x-r)^(y+r)) > (x^y) )x-=r,y+=r,op+=r;
+  ll x,y,k;cin>>x>>y>>k;
+  ll ans = 0;
+  while(k) {
+    if( y < 2*x) break;
+    ans+=y%x;
+    ++y, ++x;
+    --k;
   }
-  cout<<(y^x)<<' '<<op<<'\n';
+  ans+= k*(y%x);
+  cout<<ans<<'\n';
 }
 
 int main() {

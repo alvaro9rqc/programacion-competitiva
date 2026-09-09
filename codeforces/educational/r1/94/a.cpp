@@ -11,15 +11,13 @@ using vl = vector<ll>;
 #define all(x) begin(x), end(x)
 
 void solve() {
-  ll x, y;cin>>x>>y;
-  ll op=0;
-  for (auto i = 31; i >= 0; i--) {
-    ll m=1ll<<i;
-    if((x^y)&m) continue;
-    ll r = m - ( (m-1)&y);
-    if(r<=x and ((x-r)^(y+r)) > (x^y) )x-=r,y+=r,op+=r;
+  int n;cin>>n;
+  int mi=n+3,ma=-1;
+  for (auto i = 0; i < n; i++) {
+    int x;cin>>x;
+    if(!x) mi=min(mi,i),ma=max(ma,i);
   }
-  cout<<(y^x)<<' '<<op<<'\n';
+  cout<<((mi==ma or ma == -1)?-1:( (mi!=0) + (ma!=n-1)))<<'\n';
 }
 
 int main() {
