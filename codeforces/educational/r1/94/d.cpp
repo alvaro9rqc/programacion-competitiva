@@ -35,23 +35,28 @@ void solve() {
   vector<vi> dp(5, vi(m+1));
   for (auto i = 0; i < 5; i++) dp[i].back() = 0;
   for (auto i = m-1; i >= 0; i--) {
+    auto [fi, si] = arr[i];
+    vector<array<int,3>> p;
+    if(fi == 0) p.push_back({0,0,1});
+    else {
+      if(si & 1) p.push_back({1,1,1});
+      else  {
+        if (si > 2) 
+          p.push_back({1,1,2});
+        p.push_back({1,2,1}),
+        p.push_back({2,1,1});
+      }
+      if (fi==-1) 
+        for(auto& [a,b,c]: p) a=-a,b=-b;
+    }
     for (auto j = 0; j < 5; j++) {
+      int ans = 3;
       int f = j-2;
-      auto [fi, si] = arr[i];
-      int n1=0,n2=0;
-      n1 = 1;
-      n2 = (si&1?1:2);
-      if(fi==-1) {
-        n1=-n1;
-        n2=-n2;
-      }else if (fi == 0) n1=0,n2=0;
-      dp[j][i] = min(
-        max(abs(n1-f), dp[n2+2][i+1]),
-        max(abs(n2-f), dp[n1+2][i+1])
-      );
+      for(auto& [a,b,c]: p) 
+      ans=min(ans,max({abs(a-f), dp[b+2][i+1], c}));
+      dp[j][i]=ans;
     }
   }
-  // dbg(dp[2][1]);
   cout<<dp[2][0]<<'\n';
 }
 
