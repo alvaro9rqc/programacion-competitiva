@@ -12,18 +12,32 @@ using vl = vector<ll>;
 
 void solve() {
   ll x, y;cin>>x>>y;
-  ll ans = 0;
+  ll yo = y;
+  ll xo = x;
   for (auto i = 31; i >= 0; i--) {
     ll m = 1ll<<i;
     if(m&y) continue;
     ll r = m - ( (m-1)&y);
-    if(r<=x) x-=r,y+=r,ans+=r;
-    dbg(i);
-    dbg(r);
-    dbg(x);
-
+    if(r<=x) x-=r,y+=r;
   }
-  cout<<y<<' '<<ans<<'\n';
+  ll op = 0;
+  for (auto i = 0; i < 32; i++) {
+    ll m=1ll<<i;
+    if(y&m) {
+      if ( (yo&m) == (xo&m) ) {
+        op+=m;
+        yo+=m;
+        xo-=m;
+      }
+    } else {
+      if ( (yo&m) or (xo&m) ) {
+        op+=m;
+        yo+=m;
+        xo-=m;
+      }
+    }
+  }
+  cout<<y<<' '<<op<<'\n';
 }
 
 int main() {
