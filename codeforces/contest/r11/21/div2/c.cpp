@@ -11,23 +11,17 @@ using vl = vector<ll>;
 #define all(x) begin(x), end(x)
 
 void solve() {
-  int n,m;cin>>n>>m;
-  vl arr(n);for(auto& i: arr) cin >> i;
-  multiset<ll> oms;
-  ll s = 0;
-  for (auto i = 0; i < m-1; i++) s+=arr[i],oms.emplace(arr[i]);
-  ll ans = -1*(1e17);
-  for (auto i = m-1; i < n; i++) {
-    ans=max(ans, -s+m*arr[i]);
-    auto it = oms.upper_bound(arr[i]);
-    if(it!=oms.end()) {
-      it = --oms.end();
-      s+=arr[i]-*it;
-      oms.erase(it);
-      oms.emplace(arr[i]);
-    }
+  int n;cin>>n;
+  vl arr(n); for(auto& i: arr) cin >> i;
+  sort(all(arr));
+  ll mod = 998244353;
+  ll c=0,nr=1,sn=arr.back();
+  for (auto i = n-2; i >= 0; i--) {
+    c = ( (n-i-1)*c%mod+nr*(mod+sn-arr[i]*(n-i-1)%mod)%mod )%mod;
+    nr = (n-i-1)*nr%mod;
+    sn =(sn+arr[i])%mod;
   }
-  cout<<ans<<'\n';
+  cout<<c<<'\n';
 }
 
 int main() {

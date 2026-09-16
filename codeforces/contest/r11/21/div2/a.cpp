@@ -11,23 +11,25 @@ using vl = vector<ll>;
 #define all(x) begin(x), end(x)
 
 void solve() {
-  int n,m;cin>>n>>m;
-  vl arr(n);for(auto& i: arr) cin >> i;
-  multiset<ll> oms;
-  ll s = 0;
-  for (auto i = 0; i < m-1; i++) s+=arr[i],oms.emplace(arr[i]);
-  ll ans = -1*(1e17);
-  for (auto i = m-1; i < n; i++) {
-    ans=max(ans, -s+m*arr[i]);
-    auto it = oms.upper_bound(arr[i]);
-    if(it!=oms.end()) {
-      it = --oms.end();
-      s+=arr[i]-*it;
-      oms.erase(it);
-      oms.emplace(arr[i]);
-    }
+  int n;cin>>n;
+  vi p, ids;
+  for (auto i = 0; i < n; i++) {
+    int x;cin>>x;
+    p.emplace_back(x);
+    if(x!=i+1) ids.emplace_back(i);
   }
-  cout<<ans<<'\n';
+  vi pc = p;
+  for (auto i = 0; i < sz(ids); i++) {
+    pc[ids[i]]=p[ids[sz(ids)-i-1]];
+  }
+  // for(auto& i: ids) cout<<i<<' ';
+  // cout<<'\n';
+  // for(auto& i: pc) cout<<i<<' ';
+  // cout<<'\n';
+  // for(auto& i: p) cout<<i<<' ';
+  // cout<<'\n';
+  sort(all(p));
+  cout<<(pc==p?"YES":"NO")<<'\n';
 }
 
 int main() {
