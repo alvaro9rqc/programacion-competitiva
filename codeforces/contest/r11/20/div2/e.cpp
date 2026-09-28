@@ -34,18 +34,28 @@ void solve() {
   ll ans = 0;
   for (auto i = 0; i < m+1 - (n&1); i++) {
     ll v = arr[n-i-2];
-    set<ll>tkn;
+    set<ll>tkna;
+    set<ll>tknb;
     can = 1;
     for (auto j = 1ll,a=arr[n-1]-v; j < m+1-(n&1); j++,a+=arr[n-1]-v) {
-      if(ost.count(a) and tkn.count(a)==0 and ost.count(arr[n-1]-a) and tkn.count(arr[n-1]-a)==0) {
+      if(arr[n-1]-a != a and ost.count(a) and tkna.count(a)==0 and ost.count(arr[n-1]-a) and tknb.count(arr[n-1]-a)==0) {
         //disp
-        tkn.emplace(a);
-        tkn.emplace(arr[n-1]-a);
+        tkna.emplace(a);
+        tknb.emplace(arr[n-1]-a);
       } else {can=0;break;}
     }
-    if(can and tkn.count(arr[n-1]-v)){
+    if(can and n&1) {
+      ll x = 0;
+      for (auto j = 1; j < n; j++) 
+        if(!tkna.count(arr[j]) and !tknb.count(arr[j])) {
+          x=arr[j]; break;
+        }
+      can = (tkna.count(v-x));
+    }
+    if(can ){
       ans=(ans+fac[m+1 - (n&1)]*fac[m-1]%mod)%mod;
       dbg(ans);
+      dbg(v);
     }
   }
   cout<<ans<<'\n';
