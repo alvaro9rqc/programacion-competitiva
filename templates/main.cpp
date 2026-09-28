@@ -297,6 +297,7 @@ struct chash { // large odd number for C
   ll operator()(ll x) const { return __builtin_bswap64(x*C); }
 };
 // __gnu_pbds::gp_hash_table<ll,int,chash> h({},{},{},{},{1<<16});
+// using h_set = __gnu_pbds::gp_hash_table<ll, __gnu_pbds::null_type, chash>;
 using h_m = __gnu_pbds::gp_hash_table<ll,ll,chash>;
 
 // ####################
