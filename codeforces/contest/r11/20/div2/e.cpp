@@ -22,29 +22,31 @@ void solve() {
   ll n;cin>>n;
   vl arr(n);
   for(auto& i: arr) cin >> i; 
-  ll m=(n-2)/2;
-  ll can = 1;
+  ll m=(n-2)/2+(n&1);
   set<ll> ost;
   for (auto i = 0; i < m; i++) {
-    if(arr[i+1]+arr[n-2-i]!=arr[n-1]) {can=0;break;}
+    // if(arr[i+1]+arr[n-2-i]!=arr[n-1]) {can=0;break;}
     ost.emplace(arr[i+1]);
     ost.emplace(arr[n-2-i]);
   }
-  if(n&1 or !can) {cout<<"0\n";return;}
+  // if(n&1) {cout<<"0\n";return;}
+  ll can = 1;
   ll ans = 0;
-  for (auto i = 0; i < m+1; i++) {
+  for (auto i = 0; i < m+1 - (n&1); i++) {
     ll v = arr[n-i-2];
-    set<ll>tkn;tkn.emplace(v);
+    set<ll>tkn;
     can = 1;
-    for (auto j = 1ll,a=arr[n-1]-v; j < m+1; j++,a+=arr[n-1]-v) {
-      if(ost.count(a) and tkn.count(a)==0) {
+    for (auto j = 1ll,a=arr[n-1]-v; j < m+1-(n&1); j++,a+=arr[n-1]-v) {
+      if(ost.count(a) and tkn.count(a)==0 and ost.count(arr[n-1]-a) and tkn.count(arr[n-1]-a)==0) {
         //disp
         tkn.emplace(a);
         tkn.emplace(arr[n-1]-a);
       } else {can=0;break;}
     }
-    if(can and tkn.count(arr[n-1]-v))
-      ans=(ans+fac[m+1]*fac[m-1]%mod)%mod;
+    if(can and tkn.count(arr[n-1]-v)){
+      ans=(ans+fac[m+1 - (n&1)]*fac[m-1]%mod)%mod;
+      dbg(ans);
+    }
   }
   cout<<ans<<'\n';
 }
